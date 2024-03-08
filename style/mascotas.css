@@ -1,0 +1,409 @@
+/*--------------------------------------------------------------
+# header and nav
+--------------------------------------------------------------*/
+#header {
+  background: #fff;
+  transition: all 0.5s;
+  z-index: 997;
+  padding: 15px 0;
+  top: 10px;
+  box-shadow: 0px 2px 15px rgba(25, 119, 204, 0.1);
+}
+
+#header.header-scrolled {
+  top: 0;
+}
+
+#header .logo {
+  font-size: 30px;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-family: "Poppins", sans-serif;
+}
+
+#header .logo a {
+  color: #2c4964;
+}
+
+#header .logo img {
+  max-height: 100px;
+  max-width: 100px;
+}
+
+#header .logout {
+  display: flex;
+}
+
+@media (max-width: 384px) {
+  #header #btn-navCita {
+    left: 40%;
+    top: -35px;
+  }    
+  #header .logo img {
+    max-height: 50px;
+    max-width: 50px;      
+  }    
+}
+
+@media (min-width: 385px) and (max-width: 767px){
+  #header #btn-navCita {
+    left: 40%;
+    top: -35px;
+  }
+  #header .logo img {
+    max-height: 50px;
+    max-width: 50px;
+  }
+}  
+
+@media (min-width: 992px) and (max-width: 1280px){
+  #header #btn-navCita {
+    left: 15%;
+    top: -35px;
+  }
+  #header .logo img {
+    max-height: 50px;
+    max-width: 50px; 
+  }
+}
+
+.navbar {
+  padding: 0;
+}
+
+.navbar ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.navbar li {
+  position: relative;
+}
+
+.navbar a,
+.navbar a:focus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 10px 30px;
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  color: #626262;
+  white-space: nowrap;
+  transition: 0.3s;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.navbar a i,
+.navbar a:focus i {
+  font-size: 12px;
+  line-height: 0;
+  margin-left: 5px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover>a {
+  color: #1977cc;
+}
+
+
+/**
+* Mobile Navigation 
+*/
+.mobile-nav-toggle {
+  color: #555555;
+  font-size: 28px;
+  cursor: pointer;
+  display: none;
+  line-height: 0;
+  transition: 0.5s;
+}
+
+.mobile-nav-toggle.bi-x {
+  color: #fff;
+}
+
+@media (max-width: 991px) {
+  .mobile-nav-toggle {
+    display: block;
+  }
+
+  .navbar ul {
+    display: none;
+  }
+}
+
+.navbar-mobile {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(60, 60, 60, 0.9);
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.navbar-mobile .mobile-nav-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.navbar-mobile ul {
+  display: block;
+  position: absolute;
+  top: 55px;
+  right: 15px;
+  bottom: 15px;
+  left: 15px;
+  padding: 10px 0;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow-y: auto;
+  transition: 0.3s;
+}
+
+.navbar-mobile a,
+.navbar-mobile a:focus {
+  padding: 10px 20px;
+  font-size: 15px;
+  color: #555555;
+}
+
+.navbar-mobile a:hover,
+.navbar-mobile .active,
+.navbar-mobile li:hover>a {
+  color: #1977cc;
+}
+
+/*--------------------------------------------------------------
+# yourPet
+--------------------------------------------------------------*/
+.yourPet {
+  position: relative;
+  top: 5em;
+  padding: 60px;  
+}
+
+.yourPet h2 {
+  font-family: "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.yourPet thead {
+  font-family: "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/*--------------------------------------------------------------
+# registerPet
+--------------------------------------------------------------*/
+.registerPet {
+  position: relative;
+  margin-top: 5em;
+}
+
+.registerPet .info {
+    width: 100%;
+    background: #fff;
+  }
+  
+  .registerPet .info i {
+    font-size: 20px;
+    color: #1977cc;
+    float: left;
+    width: 44px;
+    height: 44px;
+    background: #d6e9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .registerPet  h2 {
+    margin-top: 40px;
+    font-size: 2rem; 
+    font-weight: bold; 
+    font-family: "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+  }
+
+  .registerPet  h3 {    
+    font-size: 1.1rem; 
+    font-weight: 500; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+  }
+  
+  .registerPet .info h4 {
+    padding: 0 0 0 60px;
+    font-family: "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c4964;
+  }
+  
+  .registerPet .info p {
+    padding: 0 0 0 60px;
+    margin-bottom: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 0.9rem;
+    color: #4b7dab;
+  }
+  
+  .registerPet .info .email,
+  .registerPet .info .phone {
+    margin-top: 40px;
+  }
+  
+  .registerPet .info .email:hover i,
+  .registerPet .info .address:hover i,
+  .registerPet .info .phone:hover i {
+    background: #1977cc;
+    color: #fff;
+  }
+  
+  #registerPet button[type=submit] {
+    margin-top: 20px;
+    background: #1977cc;
+    border: unset;
+    padding: 10px 30px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 4px;
+    width: 450px;
+  }
+  
+  #registerPet button[type=submit]:hover {
+    background: #1c84e3;
+  }
+  
+  #registerPet #loader {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    background: radial-gradient(circle closest-side,#000 94%,#0000) right/calc(200% - 1em) 100%;
+    animation: l24 0.5s infinite alternate linear;
+  }
+  
+  #registerPet #loader::before {
+    content: "Enviando...";
+    line-height: 1em;
+    color: #0000;
+    background: inherit;
+    background-image: radial-gradient(circle closest-side,#fff 94%,#000);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+  @keyframes l24 {
+    100% {
+      background-position: left
+    }
+  }
+  #registerPet .block {
+    display: none;
+  }
+  
+  .registerPet .registerPet-form {
+    width: 100%;
+    height: 75vh;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);  
+    padding: 30px;
+    margin-top: 20px;
+    border-radius: 10px;
+  }
+  
+  .registerPet .registerPet-form label {
+    font-family: "Roboto", "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .registerPet .registerPet-form .form-group {
+    padding-bottom: 8px;
+  }
+  
+  
+  .registerPet .registerPet-form .loader {  
+    background: #fff;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .registerPet .registerPet-form .loader:before {
+    content: "";
+    display: inline-block;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: 0 10px -6px 0;
+    border: 3px solid #1977cc;
+    border-top-color: #eee;
+    animation: animate-loading 1s linear infinite;
+  }
+  
+  .registerPet .registerPet-form #block {
+    display: none;
+  }
+  
+  .registerPet .registerPet-form input,
+  .registerPet .registerPet-form textarea {
+    border-radius: 4px;
+    box-shadow: none;  
+    font-size: medium;
+  }
+  
+  .registerPet .registerPet-form input {
+    height: 44px;
+  }  
+  
+  
+  .registerPet .registerPet-form button[type=submit] {
+    background: #1977cc;
+    border: 0;  
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+  }
+  
+  .registerPet .registerPet-form button[type=submit]:hover {
+    background: #1c84e3;
+  }
+  
+  @keyframes animate-loading {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (max-width: 384px) {
+    #registerPet button[type=submit] {
+      width: 100%;
+    }
+  }
+  
+   @media (min-width: 385px) and (max-width: 767px){
+    #registerPet button[type=submit] {
+      width: 100%;
+   }
+  } 

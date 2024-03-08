@@ -1,0 +1,57 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #444444;
+  background-color: #FCFCF7 !important; 
+}
+
+/*Register*/
+/*Sesion init*/
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0 ;   
+}
+
+.form-container form {
+    display: flex;    
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+    width: 60vw;    
+    background-color: #fff;
+    border-radius: 40px;
+    margin-top: 60px;
+    padding: 30px 50px;
+    background-color: #F0F3FA;  
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);  
+  }
+  .form-container button {
+    width: 60vw;
+    background-color: #1977cc;
+  }
+
+  #register-form {
+    font-size: 1.2rem;
+    font-family: "Roboto", "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+.error {
+    color: rgb(219, 125, 125);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.escondido {
+    display: none;
+
+}
+
+.sr-only { /*Script read only: toma los elementos y los esconde pero siguen estando en pantalla sin ocultar pero funcionando*/
+   position: absolute;
+   left: -10000px;
+   top: auto;
+   width: 1px;
+   height: 1px;
+   overflow: hidden; 
+}
