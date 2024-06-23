@@ -141,16 +141,17 @@
               <h1>Iniciar Sesión</h1>                         
               <form id="login-form" action="/validar" method="post" class="login-form">
   
-                  <label for="numero_de_identificacion" class="sr-only">Usuario</label>
-                  <input type="text" name="numeroId" id="numeroId" placeholder="Número de indentificación">
+                  <label for="username" class="sr-only">Username</label>
+                  <input type="text" name="username" id="username" placeholder="Username">
   
-                  <label for="contraseña" class="sr-only">Contraseña</label>
+                  <label for="password" class="sr-only">Contraseña</label>
                   <input type="password" name="password" id="password" placeholder="Contraseña">
   
                   <button type="submit" value="login" class="btn btn-primary">Iniciar sesión</button>
                   <p class="error escondido">Usuario o Contraseña incorrectos</p>
               </form>
               <p>¿Todavía no tienes una cuenta? - <a href="/registro">Registrar</a></p>
+              <p>¿Olvidaste tu contraseña? - <a href="/recover_pass">Recuperar Contraseña</a></p>
           </div>
           </div>
 
@@ -648,7 +649,9 @@
   <!-- Template Main JS File -->
   <script src="../style/assets/js/main.js"></script>  
   <script src="../src/loadingLogin.js"></script> 
-  <script src="../src/login.js"></script>   
+  <script src="../src/login.js"></script>  
+  <script src="../src/homepage.js"></script> 
+
 
 </body>
 

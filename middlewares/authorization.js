@@ -38,7 +38,7 @@ function revisarCookie(req) {
         console.log("Decodificado:", decodificada);
 
         // Verificar si el usuario existe en la base de datos o en tu array de usuarios
-        const usuarioExistente = usuario.find(usuario => usuario.numeroId === decodificada.numeroId);
+        const usuarioExistente = usuario.find(usuario => usuario.username === decodificada.username);
         console.log("Usuario existente:", usuarioExistente);
 
         return usuarioExistente !== undefined; // Retorna true si el usuario existe, de lo contrario false

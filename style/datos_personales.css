@@ -1,0 +1,15 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    color: #444444;
+    background-color: #FCFCF7 !important; 
+  }
+  
+  /*Register*/
+  /*Sesion init*/
+  .container-datos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px ;   
+  }
+  

@@ -213,4 +213,12 @@
    */
   new PureCounter();
 
+  // Suponiendo que responseData contiene la respuesta del servidor
+  const nombreUsuario = responseData.usuario.username;
+
+  // Actualizar el contenido de la etiqueta label con el nombre de usuario
+  document.getElementById("bienvenida").textContent = "Bienvenido, " + nombreUsuario;
+  
+
+
 })()

@@ -1,296 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Mascotas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Mascotas</title>
 
-    <link rel="stylesheet" href="/style/mascotas.css">    
+  <link rel="stylesheet" href="/style/mascotas.css">
 
-    <meta content="" name="VirtualVet">
-    <meta content="" name="Veterinario en casa">
-    <meta content="" name="veterinario domicilio medellín">
-    <meta content="" name="veterinario domicilio bogotá">
-    <meta content="" name="veterinario domicilio cali">
+  <meta content="" name="VirtualVet">
+  <meta content="" name="Veterinario en casa">
+  <meta content="" name="veterinario domicilio medellín">
+  <meta content="" name="veterinario domicilio bogotá">
+  <meta content="" name="veterinario domicilio cali">
 
-    <!-- Favicons -->
-    <link rel="stylesheet" href="/img/navicon.png.png" rel="icon" style="border-radius: 20px;">  
-    <link href="/img/Logo VirtualVet1.svg" rel="apple-touch-icon">
+  <!-- Favicons -->
+  <link rel="stylesheet" href="/img/navicon.png.png" rel="icon" style="border-radius: 20px;">
+  <link href="/img/Logo VirtualVet1.svg" rel="apple-touch-icon">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
-    <!-- Vendor CSS Files -->    
-    <link href="../style/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="../style/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-    <link href="../style/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="../style/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="../style/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="../style/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="../style/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"> 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+  <!-- Vendor CSS Files -->
+  <link href="../style/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="../style/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../style/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../style/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../style/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../style/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../style/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
 
 <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
+  <div class="container d-flex align-items-center">
 
-      <!-- <h1 class="logo me-auto"><a href="index.html">VirtualVet</a></h1> -->
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="/homepage" class="logo me-auto"><img src="../style/img/Logo VirtualVet1.svg" alt=""></a>       
-            
+    <!-- <h1 class="logo me-auto"><a href="index.html">VirtualVet</a></h1> -->
+    <!-- Uncomment below if you prefer to use an image logo -->
+    <a href="/homepage" class="logo me-auto"><img src="../style/img/Logo VirtualVet1.svg" alt=""></a>
 
-      <nav id="navbar" class="navbar order-first order-lg-0">        
-        <ul>    
-          <li><a class="nav-link scrollto active" href="/homepage#hero">Home</a></li>       
-          <li><a class="nav-link scrollto active" href="#registerPet">Registrar mascota</a></li>         
-                 
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-    </div>
+
+    <nav id="navbar" class="navbar order-first order-lg-0">
+      <ul>
+        <li><a class="nav-link scrollto active" href="/homepage#hero">Home</a></li>
+        <li><a class="nav-link scrollto active" href="#registerPet">Registrar mascota</a></li>
+
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+  </div>
 </header>
 
 <section id="yourPet" class="yourPet">
-    <table class="table table-striped">
-        <thead><h2>Tus Mascotas</h2>
-          <tr>            
-            <th scope="col">Nombre</th>
-            <th scope="col">Especie</th>
-            <th scope="col">Raza</th>
-            <th scope="col">Edad en años</th>
-            <th scope="col">Sexo</th>
-            <th scope="col">Peso en Kg</th>
-          </tr>
-        </thead>
-        <tbody id="mascotasTableBody">
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <th scope="row">#</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            
-        </tbody>
-      </table>    
+  <table class="table table-striped">
+    <thead>
+      <h2>Tus Mascotas</h2>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Especie</th>
+        <th scope="col">Raza</th>
+        <th scope="col">Edad en años</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">Peso en Kg</th>
+      </tr>
+    </thead>
+    <tbody id="mascotasTableBody">
+
+    </tbody>
+  </table>
 </section>
 
-<main>  
-    <section id="registerPet" class="registerPet">
-        <div class="container">
-          <div class="section-title">
-            <h2>Registra tus Mascotas</h2>
-            <h3>El formulario de registro de mascotas en VirtualVet cumple un papel crucial al proporcionar a los usuarios la capacidad de ingresar y gestionar información esencial sobre sus compañeros animales.</h3>
-          </div>
-        </div>      
-  
-        <div class="container">
-          <div class="row mt-5">
-            <div class="col-lg-5">
-              <div class="info">
-  
-                <div class="address">
-                    <i class="fa-solid fa-shield-dog"></i>
-                  <h4>Función</h4>
-                  <p>Permite a los dueños de mascotas mantener un historial detallado y centralizado de la salud, comportamiento y necesidades específicas de cada animal, facilitando así la prestación de servicios veterinarios personalizados y eficientes</p>
-                </div>
-  
-                <!-- <div class="email">
+<main>
+  <section id="registerPet" class="registerPet">
+    <div class="container">
+      <div class="section-title">
+        <h2>Registra tus Mascotas</h2>
+        <h3>El formulario de registro de mascotas en VirtualVet cumple un papel crucial al proporcionar a los usuarios
+          la capacidad de ingresar y gestionar información esencial sobre sus compañeros animales.</h3>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-lg-5">
+          <div class="info">
+
+            <div class="address">
+              <i class="fa-solid fa-shield-dog"></i>
+              <h4>Función</h4>
+              <p>Permite a los dueños de mascotas mantener un historial detallado y centralizado de la salud,
+                comportamiento y necesidades específicas de cada animal, facilitando así la prestación de servicios
+                veterinarios personalizados y eficientes</p>
+            </div>
+
+            <!-- <div class="email">
                   <i class="bi bi-envelope"></i>
                   <h4>Email:</h4>
                   <p><a href="mailto:virtualvet@gmail.com">virtualvet@gmail.com</a></p>
                 </div> -->
-  
-                <div class="phone">
-                    <i class="fa-solid fa-shield-cat"></i>
-                  <h4>Herramienta</h4>
-                  <p>Además, el formulario de registro de mascotas sirve como herramienta fundamental para fortalecer la conexión entre los usuarios y la plataforma VirtualVet, contribuyendo a una experiencia integral y orientada al cuidado de los animales de compañía</p>
-                </div>
-              </div>
+
+            <div class="phone">
+              <i class="fa-solid fa-shield-cat"></i>
+              <h4>Herramienta</h4>
+              <p>Además, el formulario de registro de mascotas sirve como herramienta fundamental para fortalecer la
+                conexión entre los usuarios y la plataforma VirtualVet, contribuyendo a una experiencia integral y
+                orientada al cuidado de los animales de compañía</p>
             </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7 mt-5 mt-lg-0">
+          <form id="registerPet-form" action="/registerpet" method="post">
+            <label for="registerPet-form">Nueva Mascota</label><br>                    
+
+            <input type="text" class="form-control" name="nombre" id="nombreMascota" placeholder="Nombre de la mascota">            
             
-            <div class="col-lg-7 mt-5 mt-lg-0">
-            <form id="registerPet-form" action="/registerpet" method="post"> 
-                <label for="registerPet-form">Nueva Mascota</label>
-                
-                    
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Nombre de la mascota">
-                   
+            <input type="text" name="raza" class="form-control" id="raza" placeholder="Raza">
+            
+            <label for="fecha_nto" class="mb-3">Fecha de nacimiento</label>
+            <input type="date" class="form-control" name="fecha_nto" id="fechaNto" placeholder="Fecha de nacimiento">
+            
+            <label for="sexo" class="form-selected mb-3">Sexo</label>
+            <select name="sexo" class="form-select mb-3">
+              <option selected="Hembra">Hembra</option>
+              <option value="Macho">Macho</option>
+            </select>
 
-                    
-                        <input type="text" name="race" class="form-control" id="race" placeholder="Raza">
-                               
-                  
-                    
-                        <label for="birthDate" class="mb-3">Fecha de nacimiento</label>
-                        <input type="date" class="form-control" name="birthDate" id="birthDate" placeholder="Fecha de nacimiento">
-                   
+            <label for="peso" class="mb-3">Peso en Kg</label>
+            <select name="peso" class="form-select mb-3">
+              <option selected="1 a 5">1 a 5</option>
+              <option value="6 a 9">6 a 9</option>
+              <option value="10 a 15">10 a 15</option>
+              <option value="15+">15+</option>
+            </select>
 
-                   
-                        <label for="weight" class="mb-3">Peso en Kg</label>
-                        <select name="weight" class="form-select mb-3">
-                            <option selected="1 a 5">1 a 5</option>
-                            <option value="6 a 9">6 a 9</option>
-                            <option value="10 a 15">10 a 15</option>                      
-                            <option value="15+">15+</option>                      
-                        </select>                        
-                                  
+            <label for="especie" class="mb-3">Especie</label>
+            <select name="especie" class="form-select mb-3">
+              <option selected="Canino">Canino</option>
+              <option value="Felino">Felino</option>
+              <option value="Otros">Otros</option>
+            </select>
+            
+            <label for="vacunacion" class="mb-3">Vacunación</label>
+            <select name="vacunacion" class="form-select mb-3">
+              <option selected="No">No</option>
+              <option value="Todas">Todas</option>
+              <option value="Sólo Rabia">Sólo Rabia</option>
+            </select>
 
-                    
-                        <label for="species" class="mb-3">Especie</label>                    
-                        <select name="species" class="form-select mb-3">
-                            <option selected="Canino">Canino</option>
-                            <option value="Felino">Felino</option>
-                            <option value="Otros">Otros</option>                      
-                        </select>
-                    
+            <label for="desparasitacion" class="form-selected mb-3">Desparasitación</label>
+            <select name="desparasitacion" class="form-select mb-3">
+              <option selected="No">No</option>
+              <option value="Si">Si</option>
+            </select>
 
-                 
-                        <label for="sex" class="form-selected mb-3">Sexo</label> 
-                        <select name="sex" class="form-select mb-3">
-                            <option selected="Hembra">Hembra</option>
-                            <option value="Macho">Macho</option>
-                        </select>
-                   
+            <label for="tipo_vivienda" class="form-selected mb-3">Tipo de vivienda</label>
+            <select name="tipo_vivienda" class="form-select mb-3">
+              <option selected="Casa">Casa</option>
+              <option value="Apartamento">Apartamento</option>
+              <option value="Finca">Finca</option>
+            </select>
 
-                   
-                        <label for="food" class="form-selected mb-3">Alimentación</label> 
-                         <select name="food" class="form-select mb-3">
-                            <option selected="Casera">Alimento casero</option>
-                            <option value="Concentrado">Alimento concentrado</option>
-                            <option value="Ambas">Ambas</option>
-                        </select>
-                    
+            <label for="tipo_alimentacion" class="form-selected mb-3">Tipo de alimento</label>
+            <select name="tipo_alimentacion" class="form-select mb-3">
+              <option selected="Casera">Alimento casero</option>
+              <option value="Concentrado">Alimento concentrado</option>
+              <option value="Ambas">Ambas</option>
+            </select>
 
-                    
-                        <label for="vaccination" class="mb-3">Vacunación</label>                    
-                        <select name="vaccination" class="form-select mb-3">
-                            <option selected="No">No</option>
-                            <option value="Todas">Todas</option>
-                            <option value="Sólo Rabia">Sólo Rabia</option>                      
-                        </select>
-                    
+            <label for="trat_med_ant" class="form-selected mb-3">Tratamientos Previos</label>
+            <select name="trat_med_ant" class="form-select mb-3">
+              <option selected="No">No</option>
+              <option value="Si">Si</option>
+            </select>
 
-                    
-                        <label for="deworming" class="form-selected mb-3">Desparasitación</label> 
-                        <select name="deworming" class="form-select mb-3">
-                            <option selected="No">No</option>
-                            <option value="Si">Si</option>
-                        </select>
-                   
+            <label for="alergias_med" class="form-selected mb-3">Alergias a medicamentos</label>
+            <select name="alergias_med" class="form-select mb-3">
+              <option selected="No">No</option>
+              <option value="Si">Si</option>
+            </select>
 
-                    
-                        <label for="livingPlace" class="form-selected mb-3">Vivienda</label> 
-                         <select name="livingPlace" class="form-select mb-3">
-                            <option selected="Casa">Casa</option>
-                            <option value="Apartamento">Apartamento</option>
-                            <option value="Finca">Finca</option>
-                        </select>
-                    
+            <textarea class="form-control" name="cual" rows="4" placeholder="¿Cual?"></textarea>
 
-                    
-                        <label for="allergies" class="form-selected mb-3">Alergias a medicamentos</label> 
-                        <select name="allergies" class="form-select mb-3">
-                            <option selected="No">No</option>
-                            <option value="Si">Si</option>
-                        </select>                        
-                    
+            <button type="submit" value="mascotas" id="registerPet-submit">Registrar</button>
 
-                    
-                        <textarea class="form-control" name="which" rows="4" placeholder="¿Cual?"></textarea>
-                   
 
-                    
-                        
-                          <button type="submit" value="mascotas" id="registerPet-submit">Registrar</button>
-                          
-                                                
-                    
-                      
-                      <!-- <input type="hidden" name="_next" value="http://localhost:3000/">
+
+
+            <!-- <input type="hidden" name="_next" value="http://localhost:3000/">
                       <input type="hidden" name="_captcha" value="false">  -->
-            </form>       
-            </div>
-        </div> 
-        </div>                                                  
-    </section>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
- 
- <!-- Vendor JS Files -->
- <script src="../style/assets/vendor/purecounter/purecounter_vanilla.js"></script>
- <script src="../style/assets/vendor/aos/aos.js"></script>
- <script src="../style/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
- <script src="../style/assets/vendor/glightbox/js/glightbox.min.js"></script>
- <script src="../style/assets/vendor/swiper/swiper-bundle.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
- <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
- 
- <script src="../style/assets/js/main.js"></script>
- <script src="../src/mascotas.js" defer></script>   
+
+<!-- Vendor JS Files -->
+<script src="../style/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+<script src="../style/assets/vendor/aos/aos.js"></script>
+<script src="../style/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../style/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="../style/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
+
+<script src="../style/assets/js/main.js"></script>
+<script src="../src/mascotas.js" defer></script>
 
 <!-- El defer se usa para que el script se cargue después del body y me permita hacer todos los documentGetElementById y los demás-->
 
 <body>
-    
+
 </body>
+
 </html>

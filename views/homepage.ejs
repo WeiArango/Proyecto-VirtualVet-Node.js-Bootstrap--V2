@@ -44,7 +44,11 @@
     <div class="container d-flex justify-content-between">
       <div class="contact-info d-flex align-items-center">
         <!-- <i class="bi bi-envelope"></i> <a href="mailto:virtualvet@gmail.com">virtualvet@gmail.com</a> -->
-        <i class="bi bi-phone"></i> +57 3226464344
+        <span>
+          <label for="Bienvenida" id="bienvenida">Bienvenido + username</label>
+          <i class="bi bi-phone"></i> +57 3226464344 
+        </span>        
+
       </div>
       <div class="d-none d-lg-flex social-links align-items-center">
         <!-- <a href="#" class="twitter"><i class="bi bi-twitter"></i></a> -->
@@ -67,8 +71,7 @@
 
       <nav id="navbar" class="navbar order-first order-lg-0">        
         <ul>          
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="/mascotas">Mis Mascotas</a></li>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>          
           <li><a class="nav-link scrollto" href="#services">Servicios</a></li>         
           <li><a class="nav-link scrollto" href="#faq">Preguntas frecuentes</a></li>
           <li><a class="nav-link scrollto" href="#testimonials">Opiniones</a></li>        
@@ -81,6 +84,40 @@
        
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+
+      <!-- Barra de navegación oculta -->
+      <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand mt-0" href="#"><img src="/images/navicon.png.png" alt="virtualvet" id="navicono"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon mx-1" id="boton-menu"></span>
+          </button>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">"Nombre de Usuario"</h5>
+              <button type="button" class="btn-close me-2" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="#">Compras</a>
+                </li> -->
+                <li class="nav-item dropdown">                  
+                    <a class="nav-link scrollto" href="/mascotas">Mis Mascotas</a>
+                    <a class="nav-link scrollto" href="/datos_personales" id="datosPersonales">Datos
+                      personales</a>                  
+                </li>
+              </ul>
+              <form class="d-flex mt-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </nav>
 
       <a href="#appointment" id="btn-navCita">
@@ -1278,7 +1315,9 @@
   <!-- Template Main JS File -->
   <script src="../style/assets/js/main.js"></script>  
   <script src="../src/loading.js"></script> 
-  <script src="../src/homepage.js"></script>  
+  <script src="../src/homepage.js"></script>
+  <script src="../src/login.js"></script>  
+  <script src="../src/datos_personales.js"></script>  
 
   
  

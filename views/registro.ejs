@@ -17,22 +17,25 @@
         <div class="form-container">                     
             <form id="register-form" action="/registrar" method="post" class="mb-3">Crear Cuenta                
                 
-                <label for="name" class="sr-only">User</label>
-                <input type="text" name="name" id="name" placeholder="Nombre de usuario" class="form-control mb-3">
+                <label for="nombre" class="sr-only">Nombre</label>
+                <input type="text" name="nombre" id="nombre" placeholder="Nombre" class="form-control mb-3">
 
                 <label for="email" class="sr-only">Email</label>
                 <input type="email" name="email" id="email" placeholder="Email" class="form-control mb-3">
 
-                <label for="phone" class="sr-only">Phone</label>
-                <input type="tel" name="phone" id="phone" placeholder="Celular" class="form-control mb-3">
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username" class="form-control mb-3">
 
-                <label for="adress" class="sr-only">adress</label>
-                <input type="text" name="adress" id="adress" placeholder="Direccion" class="form-control mb-3">
+                <label for="celular" class="sr-only">Celular</label>
+                <input type="tel" name="celular" id="celular" placeholder="Celular" class="form-control mb-3">
 
-                <label for="contraseña" class="sr-only">Password</label>
+                <label for="direccion" class="sr-only">Direccion</label>
+                <input type="text" name="direccion" id="direccion" placeholder="Dirección" class="form-control mb-3">
+
+                <label for="password" class="sr-only">Password</label>
                 <input type="password" name="password" id="password" placeholder="Contraseña" class="form-control mb-3">
 
-                <label for="tipo_de_identificacion" class="mb-3">Tipo de identificacion</label>            
+                <label for="tipoDeIdentificacion" class="mb-3">Tipo de identificacion</label>            
                     <select name="tipoIdentificacion" class="form-select mb-3">
                         <option selected="Cedula">Cédula</option>
                         <option value="TI">TI</option>
@@ -40,10 +43,10 @@
                         <option value="Nit ">Nit</option>                        
                     </select>
                     
-                <label for="numero_de_identificacion" class="sr-only">N° Identificación</label>
-                <input type="text" name="numeroId" id="numeroId" placeholder="N° Identificación" class="form-control mb-3">
+                <label for="identificacion" class="sr-only">N° Identificacion</label>
+                <input type="text" name="identificacion" id="identificacion" placeholder="N° Identificación" class="form-control mb-3">
 
-                <label for="tipo_de_usuario" class="mb-3">Tipo de usuario</label>            
+                <label for="tipoDeUsuario" class="mb-3">Tipo de usuario</label>            
                     <select name="tipoUsuario" class="form-select mb-3">
                         <option selected="Usuario">Usuario</option>
                         <option value="Médico Veterinario">Médico Veterinario</option>

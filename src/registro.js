@@ -5,8 +5,8 @@ document.getElementById("register-form").addEventListener("submit", async(e) => 
     e.preventDefault();
 //    console.log(e.target.children.name.value);
 //    console.log(e.target.children.email.value);
-//    console.log(e.target.children.phone.value);
-//    console.log(e.target.children.adress.value);
+//    console.log(e.target.children.celular.value);
+//    console.log(e.target.children.direccion.value);
 //    console.log(e.target.children.password.value);
 //    console.log(e.target.children.tipoUsuario.value);
   
@@ -17,13 +17,14 @@ document.getElementById("register-form").addEventListener("submit", async(e) => 
         "content-Type" : "application/json"
         },
         body: JSON.stringify({
-            name: e.target.children.name.value,
+            nombre: e.target.children.nombre.value,
             email: e.target.children.email.value,
-            phone: e.target.children.phone.value,
-            adress: e.target.children.adress.value,
+            username: e.target.children.username.value,
+            celular: e.target.children.celular.value,
+            direccion: e.target.children.direccion.value,
             password: e.target.children.password.value,        
             tipoIdentificacion: e.target.children.tipoIdentificacion.value, 
-            numeroId: e.target.children.numeroId.value, 
+            identificacion: e.target.children.identificacion.value, 
             tipoUsuario: e.target.children.tipoUsuario.value        
         }) 
         

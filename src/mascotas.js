@@ -1,29 +1,64 @@
-document.getElementById("registerPet-form").addEventListener("submit", async(e) => {
+document.getElementById("registerPet-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    //console.log(e.target.children.name.value);
-    const res = await fetch("http://localhost:3000/mascotas", {
-        method: "POST",
-        headers:{
-            "Content-Type" : "application/json"
-        },
-        body: JSON.stringify({
-            name: e.target.children.name.value,
-            race: e.target.children.race.value,
-            birthDate: e.target.children.birthDate.value,
-            weight: e.target.children.weight.value,
-            species: e.target.children.species.value,
-            sex: e.target.children.sex.value,
-            food: e.target.children.food.value,
-            vaccination: e.target.children.vaccination.value,
-            deworming: e.target.children.deworming.value,
-            livingPlace: e.target.children.livingPlace.value,
-            allergies: e.target.children.allergies.value,
-            which: e.target.children.which.value
-        })
-    });
-    if(!res.ok) return;
-    const resJson = await res.json();
-    if(resJson.redirect){
-        window.location.href = resJson.redirect;
+
+    const nombre = e.target.children.nombre.value;
+
+    if (!nombre) {
+        // Muestra un alerta si el nombre está vacío
+        alert("Por favor digita el nombre de tu mascota");
+        return;
     }
-})
+
+    try {
+        const res = await fetch("http://localhost:3000/mascotas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({                
+                nombre: e.target.children.nombre.value,
+                especie: e.target.children.especie.value,
+                raza: e.target.children.raza.value,
+                fecha_nto: e.target.children.fecha_nto.value,
+                sexo: e.target.children.sexo.value,
+                peso: e.target.children.peso.value,
+                vacunacion: e.target.children.vacunacion.value,
+                desparasitacion: e.target.children.desparasitacion.value,
+                tipo_vivienda: e.target.children.tipo_vivienda.value,
+                tipo_alimentacion: e.target.children.tipo_alimentacion.value,
+                trat_med_ant: e.target.children.trat_med_ant.value,
+                alergias_med: e.target.children.alergias_med.value,
+                cual: e.target.children.cual.value,                
+            })
+        });
+
+        if (!res.ok) {
+            console.error('Error en la respuesta del servidor:', res);
+            return;
+        }
+
+        const resJson = await res.json();
+        console.log('Respuesta del servidor:', resJson);
+
+        if (resJson.message) {
+            // Si la respuesta contiene un mensaje, muestra un alerta
+            alert(resJson.message);
+        }
+
+        if (resJson.resetForm) {
+            // Reiniciar el formulario
+            e.target.reset();
+        }
+
+        if (resJson.redirect) {
+            // Redirigir después de un breve retraso para asegurar que el formulario se haya reiniciado
+            setTimeout(() => {
+                window.location.href = resJson.redirect;
+            }, 500); // Ajusta el tiempo según sea necesario
+        }
+    } catch (error) {
+        console.error('Error durante la solicitud:', error);
+    }
+});
+
+

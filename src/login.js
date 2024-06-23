@@ -2,7 +2,7 @@ const mensajeError = document.getElementsByClassName("error")[0];
 
 document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log(e.target.children.numeroId.value);
+    console.log(e.target.children.username.value);
     console.log(e.target.children.password.value);
   
     const res = await fetch("/validar", {
@@ -11,7 +11,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        numeroId: e.target.children.numeroId.value,
+        username: e.target.children.username.value,
         password: e.target.children.password.value
       })
     });
@@ -28,3 +28,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
       }
     }
   });
+
+
+ 
+
+ 
