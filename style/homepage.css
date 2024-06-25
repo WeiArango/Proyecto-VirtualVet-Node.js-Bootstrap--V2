@@ -226,6 +226,22 @@ h6 {
   border-left: 0;
 }
 
+.navUser {
+  position: absolute;
+  top: 15px;
+  left: 150px;
+  display: flex; 
+  color: #171717; 
+  text-transform: uppercase;     
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.escondido {
+    display: none;  
+}
+
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/

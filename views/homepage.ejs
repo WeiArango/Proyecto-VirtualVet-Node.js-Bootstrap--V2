@@ -44,8 +44,7 @@
     <div class="container d-flex justify-content-between">
       <div class="contact-info d-flex align-items-center">
         <!-- <i class="bi bi-envelope"></i> <a href="mailto:virtualvet@gmail.com">virtualvet@gmail.com</a> -->
-        <span>
-          <label for="Bienvenida" id="bienvenida">Bienvenido + username</label>
+        <span>          
           <i class="bi bi-phone"></i> +57 3226464344 
         </span>        
 
@@ -90,6 +89,9 @@
       <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand mt-0" href="#"><img src="/images/navicon.png.png" alt="virtualvet" id="navicono"></a>
+          <span class="navUser">
+            <p class="navUser escondido">Bienvenido "Username"</p> 
+          </span>
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon mx-1" id="boton-menu"></span>
@@ -107,7 +109,7 @@
                 </li> -->
                 <li class="nav-item dropdown">                  
                     <a class="nav-link scrollto" href="/mascotas">Mis Mascotas</a>
-                    <a class="nav-link scrollto" href="/datos_personales" id="datosPersonales">Datos
+                    <a class="nav-link scrollto" href="/datos_personales/${username}" id="datosPersonales">Datos
                       personales</a>                  
                 </li>
               </ul>
@@ -1317,9 +1319,7 @@
   <script src="../src/loading.js"></script> 
   <script src="../src/homepage.js"></script>
   <script src="../src/login.js"></script>  
-  <script src="../src/datos_personales.js"></script>  
-
-  
+  <script src="../src/datos_personales.js"></script>   
  
 
 </body>

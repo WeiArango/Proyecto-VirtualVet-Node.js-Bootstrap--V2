@@ -2,8 +2,11 @@ const mensajeError = document.getElementsByClassName("error")[0];
 
 document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log(e.target.children.username.value);
-    console.log(e.target.children.password.value);
+    const formData = new FormData(e.target);
+    const username = formData.get("username");
+    const password = formData.get("password");
+    console.log(username);
+    console.log(password);
   
     const res = await fetch("/validar", {
       method: "POST",
@@ -11,8 +14,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username: e.target.children.username.value,
-        password: e.target.children.password.value
+        username: username,
+        password: password
       })
     });
   
@@ -20,16 +23,13 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
       mensajeError.classList.toggle("escondido", false);
     } else {
       const resJson = await res.json();
+      localStorage.setItem('username', username);
       if (resJson.redirect) {
-        // Almacenar el token en el almacenamiento local
+        // Almacenar el token y el username en el almacenamiento local
         localStorage.setItem("jwt", resJson.token);
+        localStorage.setItem("username", username);
   
         window.location.href = resJson.redirect;
       }
     }
   });
-
-
- 
-
- 

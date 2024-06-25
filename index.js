@@ -65,7 +65,7 @@ app.get("/recover_pass", authorization.soloPublico, (req, res) => res.render("re
 app.get("/reset_pass/:token", authorization.soloPublico, (req, res) => res.render("reset_pass"));
 app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homepage"));
 app.get("/mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
-app.get("/datos_personales", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
+app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
 //Endpoints
 
 //Configuración de la ruta para obtener datos del usuario
@@ -248,8 +248,32 @@ app.post('/cambiarPassword', (req, res) => {
 app.post("/mascotas", authentication.mascotas, function(req, res){
 });
 
+//RUTA PARA OBETENER DATOS DEL USUARIO
+app.get('/datos_personales', (req, res) => {
+    const user = req.query.username; // Usar req.query para obtener el parámetro de consulta
+    console.log('Nombre de usuario recibido:', user); // Debugging
+    if (!user) {
+        res.status(400).send('Falta el parámetro username');
+        return;
+    }
+    const sql = `SELECT * FROM usuario WHERE username = ?`;
+  
+    conexión.query(sql, [user], (err, result) => {
+      if (err) {
+        console.error('Error en la base de datos:', err); // Debugging
+        res.status(500).send('Error en la base de datos');
+        return;
+      }
+      if (result.length > 0) {
+        res.json(result[0]);
+      } else {
+        res.status(404).send('Usuario no encontrado');
+      }
+    });
+});
 
-//PARA MOSTRAR LA BIENVENIDA AL USUARIO
+
+
 
 
 

@@ -201,6 +201,38 @@ async function reset_pass(req, res) {
         console.log(datos);        
 }}
 
+// async function datos_personales(req, res) {
+//     const username = req.body.username;    
+    
+//     if (!username) {
+//         return res.status(400).send({status: "Error", message: "Username no encontrado"});
+//     }
+
+//     const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";        
+    
+//     conexión.query(buscarUsuarioQuery, [username], async function(error, lista) {
+//         if (error) {
+//             throw error;
+//         } else {            
+//             if (lista.length > 0) {
+//                 const usuario = lista[0];                 
+
+//                     const responseData = {
+//                         status: "ok",
+//                         message: "Usuario Validado",
+//                         redirect: "/datos_personales",
+//                         usuario: {
+//                             username: usuario.username // Incluir el nombre de usuario en la respuesta
+//                         }                                              
+//                     };
+//                     return res.send(responseData);
+//                 } else {
+//                     return res.status(401).send({ status: "Error", message: "Usuario incorrecto" });
+//                 }                                                       
+//         }    
+//     });
+// }
+
 async function mascotas(req, res) {
     console.log("autenticacion", req.body);
     const nombre = req.body.nombre;

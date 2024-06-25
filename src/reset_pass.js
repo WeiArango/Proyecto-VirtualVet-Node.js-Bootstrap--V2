@@ -50,6 +50,7 @@ document.getElementById("resetPass-form").addEventListener("submit", async (e) =
             } else {
                 mensajeExito.textContent = resJson.message || "Contraseña restablecida con éxito para usuario.";
                 mensajeExito.classList.toggle("escondido", false);
+                e.target.reset();
             }
         }
     } catch (error) {
