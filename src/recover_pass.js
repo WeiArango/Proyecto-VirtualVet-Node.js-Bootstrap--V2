@@ -31,7 +31,7 @@ document.getElementById("recoverPass-form").addEventListener("submit", async (e)
             const resJson = await res.json();
             if (resJson.status === "ok") {
                 // Mostrar mensaje de éxito
-                mensajeExito.textContent = `Correo de recuperación enviado a ${email}. Revisa tu bandeja de entrada.`;
+                mensajeExito.textContent = `Correo de recuperación enviado a ${email} Revisa tu bandeja de entrada.`;
                 mensajeExito.classList.toggle("escondido", false);
                 e.target.reset();
 

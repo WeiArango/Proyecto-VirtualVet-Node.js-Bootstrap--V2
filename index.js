@@ -197,7 +197,7 @@ app.post("/recuperarPassword", (req, res) => {
                 console.error("Error al enviar el correo:", err);
                 return res.status(500).send("Error al enviar el correo de recuperación");
             }            
-            console.log("Correo enviado:", info.response);
+            console.log(`Correo enviado a ${email}:`, info.response);
             return res.status(201).send({ status: "ok", message: `Correo de recuperación enviado a ${email}`, resetToken: resetToken }); 
         });
     });
@@ -236,7 +236,8 @@ app.post('/cambiarPassword', (req, res) => {
                 console.error("Error en la actualización:", err);
                 return res.status(500).json({ message: 'Error al actualizar la contraseña' });
             }
-            res.json({ message: `Contraseña actualizada exitosamente para usuario ${usuario.email}` });
+            res.json({ message: `Contraseña actualizada exitosamente para usuario ${usuario.username}` });
+            console.log(`Contraseña restablecida para usuario ${usuario.username}`)
         });
     });
 });

@@ -47,7 +47,7 @@ document.getElementById("resetPass-form").addEventListener("submit", async (e) =
         } else {
             if (resJson.redirect) {
                 window.location.href = resJson.redirect;
-            } else {
+            } else {                
                 mensajeExito.textContent = resJson.message || "Contraseña restablecida con éxito para usuario.";
                 mensajeExito.classList.toggle("escondido", false);
                 e.target.reset();
