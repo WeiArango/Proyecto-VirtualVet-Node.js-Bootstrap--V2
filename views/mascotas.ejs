@@ -62,13 +62,19 @@
     <thead>
       <h2>Tus Mascotas</h2>
       <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Especie</th>
-        <th scope="col">Raza</th>
-        <th scope="col">Edad en años</th>
-        <th scope="col">Sexo</th>
-        <th scope="col">Peso en Kg</th>
+        <th scope="col" id="nombreMascota">Nombre</th>
+        <th scope="col" id="especie">Especie</th>
+        <th scope="col" id="raza">Raza</th>
+        <th scope="col" id="fechaNto">Edad en años</th>
+        <th scope="col" id="sexo">Sexo</th>
+        <th scope="col" id="peso">Peso en Kg</th>
+        <th scope="col" id="vacunacion">Vacunación</th>
+        <th scope="col" id="desparasitacion">Desparasitación</th>
+        <th scope="col" id="vivienda">Vivienda</th>
+        <th scope="col" id="alimento">Alimento</th>
+        <th scope="col" id="trat_previos">Trat Previos</th>
+        <th scope="col" id="allergias">Allerg Mx</th>
+        <th scope="col" id="cual">¿Cual?</th>
       </tr>
     </thead>
     <tbody id="mascotasTableBody">
@@ -118,7 +124,9 @@
 
         <div class="col-lg-7 mt-5 mt-lg-0">
           <form id="registerPet-form" action="/registerpet" method="post">
-            <label for="registerPet-form">Nueva Mascota</label><br>                    
+            <label for="registerPet-form">Nueva Mascota</label><br>   
+            
+            <input type="text" class="form-control" name="id_mascota" readonly disabled placeholder="id_Mascota">
 
             <input type="text" class="form-control" name="nombre" id="nombreMascota" placeholder="Nombre de la mascota">            
             
@@ -128,13 +136,13 @@
             <input type="date" class="form-control" name="fecha_nto" id="fechaNto" placeholder="Fecha de nacimiento">
             
             <label for="sexo" class="form-selected mb-3">Sexo</label>
-            <select name="sexo" class="form-select mb-3">
+            <select name="sexo" class="form-select mb-3" id="sexo">
               <option selected="Hembra">Hembra</option>
               <option value="Macho">Macho</option>
             </select>
 
             <label for="peso" class="mb-3">Peso en Kg</label>
-            <select name="peso" class="form-select mb-3">
+            <select name="peso" class="form-select mb-3" id="peso">
               <option selected="1 a 5">1 a 5</option>
               <option value="6 a 9">6 a 9</option>
               <option value="10 a 15">10 a 15</option>
@@ -142,52 +150,52 @@
             </select>
 
             <label for="especie" class="mb-3">Especie</label>
-            <select name="especie" class="form-select mb-3">
+            <select name="especie" class="form-select mb-3" id="especie">
               <option selected="Canino">Canino</option>
               <option value="Felino">Felino</option>
               <option value="Otros">Otros</option>
             </select>
             
             <label for="vacunacion" class="mb-3">Vacunación</label>
-            <select name="vacunacion" class="form-select mb-3">
+            <select name="vacunacion" class="form-select mb-3" id="vacunacion">
               <option selected="No">No</option>
               <option value="Todas">Todas</option>
               <option value="Sólo Rabia">Sólo Rabia</option>
             </select>
 
             <label for="desparasitacion" class="form-selected mb-3">Desparasitación</label>
-            <select name="desparasitacion" class="form-select mb-3">
+            <select name="desparasitacion" class="form-select mb-3" id="desparasitacion">
               <option selected="No">No</option>
               <option value="Si">Si</option>
             </select>
 
             <label for="tipo_vivienda" class="form-selected mb-3">Tipo de vivienda</label>
-            <select name="tipo_vivienda" class="form-select mb-3">
+            <select name="tipo_vivienda" class="form-select mb-3" id="vivienda">
               <option selected="Casa">Casa</option>
               <option value="Apartamento">Apartamento</option>
               <option value="Finca">Finca</option>
             </select>
 
             <label for="tipo_alimentacion" class="form-selected mb-3">Tipo de alimento</label>
-            <select name="tipo_alimentacion" class="form-select mb-3">
+            <select name="tipo_alimentacion" class="form-select mb-3" id="alimento">
               <option selected="Casera">Alimento casero</option>
               <option value="Concentrado">Alimento concentrado</option>
               <option value="Ambas">Ambas</option>
             </select>
 
             <label for="trat_med_ant" class="form-selected mb-3">Tratamientos Previos</label>
-            <select name="trat_med_ant" class="form-select mb-3">
+            <select name="trat_med_ant" class="form-select mb-3" id="trat_previos">
               <option selected="No">No</option>
               <option value="Si">Si</option>
             </select>
 
             <label for="alergias_med" class="form-selected mb-3">Alergias a medicamentos</label>
-            <select name="alergias_med" class="form-select mb-3">
+            <select name="alergias_med" class="form-select mb-3" id="allergias">
               <option selected="No">No</option>
               <option value="Si">Si</option>
             </select>
 
-            <textarea class="form-control" name="cual" rows="4" placeholder="¿Cual?"></textarea>
+            <textarea class="form-control" name="cual" rows="4" placeholder="¿Cual?" id="cual"></textarea>
 
             <button type="submit" value="mascotas" id="registerPet-submit">Registrar</button>
 
@@ -215,6 +223,7 @@
 
 <script src="../style/assets/js/main.js"></script>
 <script src="../src/mascotas.js" defer></script>
+<script src="../src/datos_mascotas.js" defer></script>
 
 <!-- El defer se usa para que el script se cargue después del body y me permita hacer todos los documentGetElementById y los demás-->
 

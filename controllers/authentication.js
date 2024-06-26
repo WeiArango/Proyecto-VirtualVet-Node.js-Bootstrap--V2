@@ -24,7 +24,7 @@ async function login(req, res) {
     const password = req.body.password;    
     
     if (!username || !password) {
-        return res.status(400).send({status: "Error", message: "Por favor digite todos los campos"});
+        return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos" });
     }
 
     const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";        
@@ -35,6 +35,7 @@ async function login(req, res) {
         } else {            
             if (lista.length > 0) {
                 const usuario = lista[0];  
+                const id_usuario = usuario.id_usuario;
                 
                 const passwordMatch = await bcryptjs.compare(password, usuario.password);
                 if (passwordMatch) {
@@ -45,11 +46,11 @@ async function login(req, res) {
                     );
 
                     const cookieOption = {
-                        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 30000),
+                        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
                         path: "/",
                         sameSite: "None",
                         secure: true        
-                    }
+                    };
 
                     res.cookie("jwt", token, cookieOption);
 
@@ -60,7 +61,8 @@ async function login(req, res) {
                         redirect: "/homepage",
                         usuario: {
                             nombre: usuario.nombre,
-                            username: usuario.username // Incluir el nombre de usuario en la respuesta
+                            username: usuario.username,
+                            id_usuario: id_usuario
                         }                                              
                     };
 
@@ -243,12 +245,13 @@ async function mascotas(req, res) {
         const datos = req.body;
         console.log(datos);
 
+        let id_mascota = datos.id_mascota;
         let nombre = datos.nombre;
         let especie = datos.especie;
         let raza = datos.raza;
         let fecha_nto = datos.fecha_nto;
         let sexo = datos.sexo;
-        let peso = datos.peso;        
+        let peso = datos.peso;
         let vacunacion = datos.vacunacion;
         let desparasitacion = datos.desparasitacion;
         let tipo_vivienda = datos.tipo_vivienda;
@@ -257,19 +260,29 @@ async function mascotas(req, res) {
         let alergias_med = datos.alergias_med;
         let cual = datos.cual;
 
-        let registrarMascota = "INSERT INTO mascotas (nombre, especie, raza, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Calcular la edad en años con decimales
+        const nacimiento = new Date(fecha_nto);
+        const hoy = new Date();
+        const edadEnMilisegundos = hoy - nacimiento;
+        const edadEnAnios = edadEnMilisegundos / (1000 * 60 * 60 * 24 * 365.25);
+        const edad = edadEnAnios.toFixed(1); // Redondear a un decimal
 
-        conexión.query(registrarMascota, [nombre, especie, raza, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual], (error) => {
+        let registrarMascota = "INSERT INTO mascotas (id_mascota, nombre, especie, raza, fecha_nto, edad_años, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        conexión.query(registrarMascota, [id_mascota, nombre, especie, raza, fecha_nto, edad, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual], (error) => {
             if (error) {
                 throw error;
             } else {
                 const successMessage = `${nombre} fue registrado exitosamente`;
-                res.status(200).send({ status: "Success", message: successMessage, resetForm: true, redirect: "/mascotas" });
+                res.status(200).send({ status: "Success", message: successMessage, resetForm: true, redirect: "/mascotas/${id_usuario}" });
                 console.log(successMessage);
             }
         });
     }
 }
+
+
+
 
 export const usuario = []
 export const methods = {

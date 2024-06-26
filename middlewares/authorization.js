@@ -8,7 +8,7 @@ dotenv.config();
 
 function soloHomepage(req, res, next) { //Next en los middwares es lo que ejecutamos para decir que siga adelante en la linea de procesos que tiene que hacer, osea que pase al próximo middware
     const logueado = revisarCookie(req);
-        if(logueado) { 
+        if(!logueado) { 
             return next();
          } else {
             return res.redirect("/");     

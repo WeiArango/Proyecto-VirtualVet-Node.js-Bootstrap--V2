@@ -64,7 +64,7 @@ app.get("/registro", authorization.soloPublico, (req, res) => res.render("regist
 app.get("/recover_pass", authorization.soloPublico, (req, res) => res.render("recover_pass"));
 app.get("/reset_pass/:token", authorization.soloPublico, (req, res) => res.render("reset_pass"));
 app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homepage"));
-app.get("/mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
+app.get("/mascotas/:id_mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
 app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
 //Endpoints
 
@@ -125,11 +125,11 @@ app.post("/validar", authentication.login, (req, res) => {
      const datos = req.body;
      console.log(datos);
 
-     let username = datos.numeroId;    
+     let username = datos.username;    
      let password = datos.password;    
 
      //Para buscar usuarios antes de login y comparar si ya existe
-     let buscar = "SELECT * FROM usuario WHERE numeroId = ? AND password = ?";
+     let buscar = "SELECT id:_usuario, username, password FROM usuario WHERE username = ? AND password = ?";
 
      //Ejecutar la consulta de búsqueda
      conexión.query(buscar, [username, password], (error, rows) => {
@@ -142,7 +142,17 @@ app.post("/validar", authentication.login, (req, res) => {
          if (rows.length > 0) {
              // El usuario existe, se puede realizar la acción de ingreso
              console.log(`Bienvenido ${username} a nuestro portal`);
-             return res.send({ status: "ok", message: "Usuario Registrado", token: `${token}`, redirect: "/homepage.ejs" });
+
+            const user = rows[0];  // Suponemos que sólo hay un usuario con ese username y password
+            const id_usuario = user.id_usuario;
+
+             return res.send({ 
+                status: "ok", 
+                message: "Usuario Registrado", 
+                token: `${token}`, 
+                redirect: "/homepage.ejs",
+                id_usuario: id_usuario 
+            });
          } else {
              // El usuario no existe
              console.log("Usuario no encontrado");
@@ -270,6 +280,30 @@ app.get('/datos_personales', (req, res) => {
       } else {
         res.status(404).send('Usuario no encontrado');
       }
+    });
+});
+
+//RUTA PARA OBETENER DATOS DE MASCOTAS
+app.get('/mascotas', (req, res) => {
+    const idUsuario = req.query.id_usuario; // Usar req.query para obtener el parámetro de consulta
+    console.log('Id usuario recibido:', idUsuario); // Debugging
+    if (!idUsuario) {
+        res.status(400).send('Falta el parámetro id_usuario');
+        return;
+    }
+    const sql = `SELECT * FROM mascotas WHERE id_mascota = ?`;
+
+    conexión.query(sql, [idUsuario], (err, result) => {
+        if (err) {
+            console.error('Error en la base de datos:', err); // Debugging
+            res.status(500).send('Error en la base de datos');
+            return;
+        }
+        if (result.length > 0) {
+            res.json(result);
+        } else {
+            res.status(404).send('Mascotas no encontradas');
+        }
     });
 });
 

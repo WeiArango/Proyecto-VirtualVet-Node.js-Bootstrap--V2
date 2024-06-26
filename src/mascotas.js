@@ -9,13 +9,17 @@ document.getElementById("registerPet-form").addEventListener("submit", async (e)
         return;
     }
 
+    // Obtener id_usuario del localStorage
+    const id_usuario = localStorage.getItem("id_usuario");
+
     try {
         const res = await fetch("http://localhost:3000/mascotas", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({                
+            body: JSON.stringify({     
+                id_mascota: id_usuario,  // Usar id_usuario como id_mascota            
                 nombre: e.target.children.nombre.value,
                 especie: e.target.children.especie.value,
                 raza: e.target.children.raza.value,
@@ -60,5 +64,4 @@ document.getElementById("registerPet-form").addEventListener("submit", async (e)
         console.error('Error durante la solicitud:', error);
     }
 });
-
 
