@@ -35,7 +35,7 @@ document.getElementById("resetPass-form").addEventListener("submit", async (e) =
             resJson = await res.json();
         } catch (err) {
             console.error('Error parsing JSON:', err);  // Añadir console.error
-            mensajeError.textContent = "Hubo un problema con la respuesta del servidor. Inténtalo de nuevo más tarde.";
+            mensajeError.textContent = "El token es inválido o ha expirado.";
             mensajeError.classList.remove("escondido");
             return;
         }

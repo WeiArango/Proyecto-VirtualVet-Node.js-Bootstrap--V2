@@ -14,6 +14,8 @@ import { methods as authentication } from "./controllers/authentication.js";
 import { methods as authorization } from "./middlewares/authorization.js";
 //Importar nodemailer para enviar emails
 import nodemailer from "nodemailer";
+//Importar RESEND para enviar emails
+import { Resend } from 'resend';
 //Importar crypto para generar un token aleatorio y enviar al usuario por email y reestablecer la contraseña
 import crypto from "crypto";
 import bcryptjs from "bcryptjs";
@@ -161,20 +163,10 @@ app.post("/validar", authentication.login, (req, res) => {
      });
 });
 
-//CONFIGURACIÓN DE NODEMAILER
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        type: 'OAuth2',
-        user: process.env.usergmail,
-        pass: process.env.pass,
-        clientId: process.env.OAUTH_CLIENTID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN
-    }
-});
+//CONFIGURACIÓN DE RESEND PARA RESTABLECIMIENTO DE CONTRASEÑA
+const resend = new Resend(process.env.API_KEY_RESEND);  // Asegúrate de reemplazar con tu API key
 
-//RUTA PARA SOLICITAR RECUPERACIÓN DE CONTRASEÑA
+// RUTA PARA SOLICITAR RECUPERACIÓN DE CONTRASEÑA
 app.post("/recuperarPassword", (req, res) => {
     const email = req.body.email;
     if (!email) {
@@ -186,7 +178,7 @@ app.post("/recuperarPassword", (req, res) => {
 
     const query = 'UPDATE usuario SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?';
 
-    conexión.query(query, [resetToken, Date.now() + 3600000, email], (err, result) => {
+    conexión.query(query, [resetToken, Date.now() + 3600000, email], async (err, result) => {
         if (err) {
             console.error("Error en la consulta:", err);
             return res.status(500).send("Error al solicitar recuperación de contraseña");
@@ -195,25 +187,27 @@ app.post("/recuperarPassword", (req, res) => {
             return res.status(404).send("Email no encontrado");
         }
 
-        const mailOptions = {
-            from: 'wei21bedoya@gmail.com',
+        const emailOptions = {
+            from: 'VirtualVet <onboarding@resend.dev>', 
             to: email,
-            subject: "Recuperación de contraseña",
-            text: `Haga click en el siguiente enlace para restablecer su contraseña: http://localhost:3000/reset_pass/${resetToken}`
+            subject: `Recuperación de contraseña para usuario ${email}`,
+            html: `<p>Haga click en el siguiente enlace para restablecer su contraseña: <a href="http://localhost:3000/reset_pass/${resetToken}">Restablecer contraseña</a></p>`
         };
 
-        transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-                console.error("Error al enviar el correo:", err);
+        try {
+            const { data, error } = await resend.emails.send(emailOptions);
+            if (error) {
+                console.error("Error al enviar el correo:", error);
                 return res.status(500).send("Error al enviar el correo de recuperación");
-            }            
-            console.log(`Correo enviado a ${email}:`, info.response);
-            return res.status(201).send({ status: "ok", message: `Correo de recuperación enviado a ${email}`, resetToken: resetToken }); 
-        });
+            }
+            console.log(`Correo enviado a ${email}:`, data);
+            return res.status(201).send({ status: "ok", message: `Correo de recuperación enviado a ${email}`, resetToken: resetToken });
+        } catch (err) {
+            console.error("Error en el envío del correo:", err);
+            return res.status(500).send("Error al enviar el correo de recuperación");
+        }
     });
 });
-
-
 
 // RUTA PARA REESTABLECER LA CONTRASEÑA
 app.post('/cambiarPassword', (req, res) => {
@@ -247,10 +241,102 @@ app.post('/cambiarPassword', (req, res) => {
                 return res.status(500).json({ message: 'Error al actualizar la contraseña' });
             }
             res.json({ message: `Contraseña actualizada exitosamente para usuario ${usuario.username}` });
-            console.log(`Contraseña restablecida para usuario ${usuario.username}`)
+            console.log(`Contraseña restablecida para usuario ${usuario.username}`);
         });
     });
 });
+
+
+// //CONFIGURACIÓN DE NODEMAILER PARA RESTABLECIMIENTO DE CONTRASEÑA CON SERVICIOS DE GOOGLE CLOUD
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         type: 'OAuth2',
+//         user: process.env.usergmail,
+//         pass: process.env.pass,
+//         clientId: process.env.OAUTH_CLIENTID,
+//         clientSecret: process.env.OAUTH_CLIENT_SECRET,
+//         refreshToken: process.env.OAUTH_REFRESH_TOKEN
+//     }
+// });
+
+// //RUTA PARA SOLICITAR RECUPERACIÓN DE CONTRASEÑA
+// app.post("/recuperarPassword", (req, res) => {
+//     const email = req.body.email;
+//     if (!email) {
+//         return res.status(400).send("Por favor digita tu Correo electrónico");
+//     }
+
+//     const resetToken = crypto.randomBytes(20).toString('hex');
+//     console.log("Generated resetToken:", resetToken); // Verificar que el token se genera cada vez
+
+//     const query = 'UPDATE usuario SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?';
+
+//     conexión.query(query, [resetToken, Date.now() + 3600000, email], (err, result) => {
+//         if (err) {
+//             console.error("Error en la consulta:", err);
+//             return res.status(500).send("Error al solicitar recuperación de contraseña");
+//         }
+//         if (result.affectedRows === 0) {
+//             return res.status(404).send("Email no encontrado");
+//         }
+
+//         const mailOptions = {
+//             from: 'wei21bedoya@gmail.com',
+//             to: email,
+//             subject: "Recuperación de contraseña",
+//             text: `Haga click en el siguiente enlace para restablecer su contraseña: http://localhost:3000/reset_pass/${resetToken}`
+//         };
+
+//         transporter.sendMail(mailOptions, (err, info) => {
+//             if (err) {
+//                 console.error("Error al enviar el correo:", err);
+//                 return res.status(500).send("Error al enviar el correo de recuperación");
+//             }            
+//             console.log(`Correo enviado a ${email}:`, info.response);
+//             return res.status(201).send({ status: "ok", message: `Correo de recuperación enviado a ${email}`, resetToken: resetToken }); 
+//         });
+//     });
+// });
+
+
+
+// // RUTA PARA REESTABLECER LA CONTRASEÑA
+// app.post('/cambiarPassword', (req, res) => {
+//     const { new_password, repeat_password, resetToken } = req.body;
+
+//     if (!new_password || !repeat_password) {
+//         return res.status(400).json({ message: 'Por favor, complete todos los campos' });
+//     }
+
+//     if (new_password !== repeat_password) {
+//         return res.status(400).json({ message: 'Las contraseñas no coinciden' });
+//     }
+
+//     const query = 'SELECT * FROM usuario WHERE resetPasswordToken = ? AND resetPasswordExpires < ?';
+//     conexión.query(query, [resetToken, Date.now()], (err, results) => {
+//         if (err) {
+//             console.error("Error en la consulta:", err);
+//             return res.status(500).json({ message: 'Error al restablecer la contraseña' });
+//         }
+//         if (results.length === 0) {
+//             return res.status(400).send('El token es inválido o ha expirado');
+//         }
+
+//         const usuario = results[0];
+//         const hashedPassword = bcryptjs.hashSync(new_password, 10);
+
+//         const updateQuery = 'UPDATE usuario SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE email = ?';
+//         conexión.query(updateQuery, [hashedPassword, usuario.email], (err, result) => {
+//             if (err) {
+//                 console.error("Error en la actualización:", err);
+//                 return res.status(500).json({ message: 'Error al actualizar la contraseña' });
+//             }
+//             res.json({ message: `Contraseña actualizada exitosamente para usuario ${usuario.username}` });
+//             console.log(`Contraseña restablecida para usuario ${usuario.username}`)
+//         });
+//     });
+// });
 
 
 
