@@ -23,15 +23,47 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Hubo un problema con la operación fetch:', error);
         });
 
-    document.getElementById('guardar').addEventListener('click', () => {
-        // Aquí podrías agregar la lógica para enviar los datos modificados al backend
+    document.getElementById('guardar').addEventListener('click', async (event) => {
+        event.preventDefault(); // Evita el envío del formulario por defecto
+
+        const datosActualizados = {
+            nombre: document.getElementById('nombre').value,
+            email: document.getElementById('email').value,
+            username: document.getElementById('username').value,
+            celular: document.getElementById('celular').value,
+            direccion: document.getElementById('direccion').value
+        };
+
+        try {
+            const response = await fetch('/datos_personales', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosActualizados)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la actualización de los datos');
+            }
+
+            const mensaje = await response.text();
+            console.log(mensaje);
+            alert("Datos actualizados exitosamente");
+            window.location.href = '/homepage';
+        } catch (error) {
+            console.error('Hubo un problema con la actualización:', error);
+            alert("Error al actualizar los datos");
+        }
     });
 
     document.getElementById('cancelar').addEventListener('click', () => {
-        // Aquí podrías agregar la lógica para manejar el botón de cancelar, si es necesario
+        // Aquí podrías agregar la lógica para manejar el botón de cancelar
+        window.location.href = '/homepage';
     });
 
     document.getElementById('modificarContraseña').addEventListener('click', () => {
         // Aquí podrías agregar la lógica para manejar la modificación de la contraseña
+        window.location.href = '/modificar_password';
     });
 });

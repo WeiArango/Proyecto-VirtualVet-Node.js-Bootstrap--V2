@@ -19,6 +19,7 @@ import { Resend } from 'resend';
 //Importar crypto para generar un token aleatorio y enviar al usuario por email y reestablecer la contraseña
 import crypto from "crypto";
 import bcryptjs from "bcryptjs";
+import JsonWebToken from "jsonwebtoken";
 import bodyParser from "body-parser";
 const app = express();
 
@@ -65,6 +66,7 @@ app.get("/",  authorization.soloPublico, (req, res) => res.render("login"));
 app.get("/registro", authorization.soloPublico, (req, res) => res.render("registro"));
 app.get("/recover_pass", authorization.soloPublico, (req, res) => res.render("recover_pass"));
 app.get("/reset_pass/:token", authorization.soloPublico, (req, res) => res.render("reset_pass"));
+app.get("/modificar_password", authorization.soloHomepage, (req, res) => res.render("modificar_password"));
 app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homepage"));
 app.get("/mascotas/:id_mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
 app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
@@ -338,10 +340,8 @@ app.post('/cambiarPassword', (req, res) => {
 //     });
 // });
 
-
-
-
 //REGISTRO DE MASCOTAS
+
 app.post("/mascotas", authentication.mascotas, function(req, res){
 });
 
@@ -369,7 +369,87 @@ app.get('/datos_personales', (req, res) => {
     });
 });
 
-//RUTA PARA OBETENER DATOS DE MASCOTAS
+//RUTA PARA ACTUALIZAR DATOS PERSONALES
+app.put('/datos_personales', async function (req, res) {
+    try {
+        const datos = req.body;
+
+        const nombre = datos.nombre;
+        const email = datos.email;
+        const username = datos.username;
+        const celular = datos.celular;
+        const direccion = datos.direccion;
+
+        // Verificar si el usuario existe
+        const buscar = "SELECT * FROM usuario WHERE username = ?";
+        const rows = await consultarBaseDeDatos(buscar, [username]);
+
+        if (rows.length === 0) {
+            console.log(`Usuario ${username} no encontrado`);
+            return res.status(404).send(`Usuario ${username} no encontrado`);
+        }
+
+        // Consulta para actualizar los datos del usuario
+        const actualizar = `
+            UPDATE usuario 
+            SET nombre = ?, email = ?, celular = ?, direccion = ? 
+            WHERE username = ?
+        `;
+        await consultarBaseDeDatos(actualizar, [nombre, email, celular, direccion, username]);
+
+        console.log(`Datos del usuario ${username} actualizados exitosamente`);
+        res.status(200).send(`Datos del usuario ${username} actualizados exitosamente`);
+    } catch (error) {
+        console.error("Error al actualizar los datos del usuario:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
+
+//RUTA PARA QUE EL USUARIO PUEDA MODIFICAR SU CONTRASEÑA
+app.post("/modificarPassword", async (req, res) => {
+    try {
+        const datos = req.body;
+        const { clave_actual, new_password, repeat_password, username } = datos;
+
+        // Verificar que las contraseñas nuevas coincidan
+        if (new_password !== repeat_password) {
+            return res.status(400).send({ status: "Error", message: "Las contraseñas nuevas no coinciden" });
+        }
+
+        // Buscar la contraseña actual en la base de datos
+        const buscar = "SELECT password FROM usuario WHERE username = ?";
+        const rows = await consultarBaseDeDatos(buscar, [username]);
+
+        if (rows.length === 0) {
+            return res.status(404).send({ status: "Error", message: "Usuario no encontrado" });
+        }
+
+        const user = rows[0];
+
+        // Verificar que la contraseña actual sea correcta
+        const contraseñaValida = await bcryptjs.compare(clave_actual, user.password);
+        if (!contraseñaValida) {
+            return res.status(401).send({ status: "Error", message: "Contraseña actual incorrecta" });
+        }
+
+        // Encriptar la nueva contraseña
+        const salt = await bcryptjs.genSalt(3);
+        const hashPassword = await bcryptjs.hash(new_password, salt);
+
+        // Actualizar la contraseña del usuario
+        const actualizar = "UPDATE usuario SET password = ? WHERE username = ?";
+        await consultarBaseDeDatos(actualizar, [hashPassword, username]);
+
+        console.log(`Contraseña del usuario ${username} modificada exitosamente`);
+        res.status(200).send({ status: "ok", message: `Contraseña modificada exitosamente para usuario ${username}`, redirect: "/homepage" });
+    } catch (error) {
+        console.error("Error al modificar la contraseña:", error);
+        res.status(500).send({ status: "Error", message: "Error interno del servidor" });
+    }
+});
+
+
+//RUTA PARA OBTENER DATOS DE MASCOTAS
 app.get('/mascotas', (req, res) => {
     const idUsuario = req.query.id_usuario; // Usar req.query para obtener el parámetro de consulta
     console.log('Id usuario recibido:', idUsuario); // Debugging
