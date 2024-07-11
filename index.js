@@ -70,6 +70,7 @@ app.get("/modificar_password", authorization.soloHomepage, (req, res) => res.ren
 app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homepage"));
 app.get("/mascotas/:id_mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
 app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
+app.get("/eliminar_cuenta", authorization.soloHomepage, (req, res) => res.render("eliminar_cuenta"));
 //Endpoints
 
 //Configuración de la ruta para obtener datos del usuario
@@ -471,6 +472,48 @@ app.get('/mascotas', (req, res) => {
             res.status(404).send('Mascotas no encontradas');
         }
     });
+});
+
+// RUTA PARA ELIMINAR LA CUENTA DE USUARIO
+app.post("/eliminarCuenta", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const buscar = "SELECT email, password FROM usuario WHERE email = ?";
+        const rows = await consultarBaseDeDatos(buscar, [email]);
+
+        if (rows.length === 0) {
+            return res.status(404).send({ status: "Error", message: "Usuario y/o contraseña incorrectos" });
+        }
+
+        const user = rows[0];
+        const contraseñaValida = await bcryptjs.compare(password, user.password);
+        if (!contraseñaValida) {
+            return res.status(401).send({ status: "Error", message: "Usuario y/o contraseña incorrectos" });
+        }
+
+        const eliminar = "DELETE FROM usuario WHERE email = ?";
+        await consultarBaseDeDatos(eliminar, [email]);
+
+        const emailOptions = {
+            from: 'VirtualVet <onboarding@resend.dev>',
+            to: email,
+            subject: `Cuenta Eliminada para ${user.email}`,
+            html: `<p>Su cuenta ha sido eliminada exitosamente de VirtualVet.</p>`
+        };
+
+        const { data, error } = await resend.emails.send(emailOptions);
+        if (error) {
+            console.error("Error al enviar el correo:", error);
+            return res.status(500).send("Error al enviar el correo de confirmación");
+        }
+
+        console.log(`Correo enviado a ${email}:`, data);
+        console.log(`La cuenta del usuario ${email} fue eliminada exitosamente`);
+        res.status(200).send({ status: "ok", message: `Cuenta eliminada exitosamente para usuario ${email}`, redirect: "/" });
+    } catch (error) {
+        console.error("Error al eliminar la cuenta:", error);
+        res.status(500).send({ status: "Error", message: "Error interno del servidor" });
+    }
 });
 
 

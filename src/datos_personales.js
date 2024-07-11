@@ -66,4 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Aquí podrías agregar la lógica para manejar la modificación de la contraseña
         window.location.href = '/modificar_password';
     });
+
+    document.getElementById('eliminarCuenta').addEventListener('click', () => {
+        // Aquí podrías agregar la lógica para manejar la eliminación de la cuenta
+        window.location.href = '/eliminar_cuenta';
+    });
 });
