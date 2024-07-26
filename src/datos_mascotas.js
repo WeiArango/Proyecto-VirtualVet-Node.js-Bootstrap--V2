@@ -12,8 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            const mascotasTableBody = document.getElementById('mascotasTableBody');
+            const mascotasTableBody = document.getElementById('mascotasTableBody');            
             mascotasTableBody.innerHTML = ''; // Limpiar cualquier contenido previo
+            
 
             data.forEach(mascota => {
                 const row = document.createElement('tr');

@@ -80,48 +80,42 @@ async function login(req, res) {
 /* CONSULTA PARA BUSCAR EL USUARIO EN LA BASE DE DATOS
 En este código, se realiza una consulta a la base de datos para buscar el usuario por su nombre (nombre). Luego se verifica que el usuario ingresado no exista en la base de datos */
 /*Archivo Controlador de la autenticación*/
-async function registro(req, res) { 
-    //console.log(req.body);
-    const nombre = req.body.nombre;
-    const email = req.body.email;
-    const username = req.body.username;
-    const celular = req.body.celular;
-    const direccion = req.body.direccion;
-    const password = req.body.password;
-    const tipoIdentificacion = req.body.tipoIdentificacion;
-    const identificacion = req.body.identificacion;
-    const tipoUsuario = req.body.tipoUsuario;
-    if (!nombre || !email || !username || !celular || !direccion || !password || !tipoIdentificacion || !identificacion || !tipoUsuario) {
-        return res.status(400).send({status:"Error", message: "Por favor digite todos los campos"});
-    }
-    //Consulta para verificar que el usuario no exista en la base de datos
-    const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";
+async function registro(req, res) {
+    const {
+        nombre,
+        email,
+        username,
+        celular,
+        direccion,
+        password,
+        tipoIdentificacion,
+        identificacion,
+        tipoUsuario
+    } = req.body;
 
-    conexión.query(buscarUsuarioQuery, [username], async (error, rows) => {
+    if (!nombre || !email || !username || !celular || !direccion || !password || !tipoIdentificacion || !identificacion || !tipoUsuario) {
+        return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos" });
+    }
+
+    // Consulta para verificar que ni el correo electrónico ni el nombre de usuario existan en la base de datos
+    const buscarUsuarioQuery = "SELECT * FROM usuario WHERE email = ? OR username = ?";
+    
+    conexión.query(buscarUsuarioQuery, [email, username], async (error, rows) => {
         if (error) {
             throw error;
         } else {
             if (rows.length > 0) {
-                const usuario = rows[{
-                    nombre: rows.nombre,
-                    email: rows.email,
-                    username: rows.username,
-                    celular: rows.celular,
-                    direccion: rows.direccion,
-                    password: rows.password,
-                    tipoIdentificacion: rows.tipoIdentificacion,
-                    identificacion: rows.identificacion,
-                    tipoUsuario: rows.tipoUsuario
-                }];
-                console.log(usuario);
-                
-                // Si el usuario ya existe en la base de datos                
-                return res.status(400).send({ status: "Error", message: "Este usuario ya existe" });
-                } else {
-                // Usuario no existe, proceder con el registro
-                // Encriptar la contraseña
+                const existingUser = rows[0];
+                if (existingUser.email === email) {
+                    return res.status(400).send({ status: "Error", message: "Este correo electrónico ya está registrado" });
+                } else if (existingUser.username === username) {
+                    return res.status(400).send({ status: "Error", message: "Este nombre de usuario ya está en uso" });
+                }
+            } else {
+                // Ni el correo electrónico ni el nombre de usuario existen, proceder con el registro
                 const salt = await bcryptjs.genSalt(3);
-                const hashPassword = await bcryptjs.hash(password, salt);   
+                const hashPassword = await bcryptjs.hash(password, salt);
+                
                 const nuevoUsuario = {
                     nombre,
                     email,
@@ -132,25 +126,25 @@ async function registro(req, res) {
                     tipoIdentificacion,
                     identificacion,
                     tipoUsuario
-                }   
-                console.log(nuevoUsuario),                
-                usuario.push(nuevoUsuario);         
-
+                };
+                console.log("Nuevo Usuario", nuevoUsuario)
+                
                 // Insertar el nuevo usuario en la base de datos
                 const registrarUsuario = "INSERT INTO usuario (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+                
                 conexión.query(registrarUsuario, [nombre, email, username, celular, direccion, hashPassword, tipoIdentificacion, identificacion, tipoUsuario], (error) => {
                     if (error) {
                         throw error;
                     } else {
-                    console.log(`Usuario ${username} creado exitosamente`);
-                    return res.status(201).send({ status: "ok", message: `Usuario ${nombre} creado exitosamente`, redirect: "/homepage" });
+                        console.log(`Usuario ${username} creado exitosamente`);
+                        return res.status(201).send({ status: "ok", message: `Usuario ${nombre} creado exitosamente`, redirect: "/homepage" });
                     }
                 });
             }
-        }                      
-    });    
-}    
+        }
+    });
+}
+ 
 
 async function recover_pass(req, res) {
     console.log("autenticacion", req.body);
