@@ -194,7 +194,7 @@ app.post("/recuperarPassword", (req, res) => {
             from: 'VirtualVet <onboarding@resend.dev>', 
             to: email,
             subject: `Recuperación de contraseña para usuario ${email}`,
-            html: `<p>Haga click en el siguiente enlace para restablecer su contraseña: <strong><a href="http://localhost:3000/reset_pass/${resetToken}">Restablecer contraseña</a><strong></p>`
+            html: `<p>Haga click en el siguiente enlace para restablecer su contraseña: <a href="http://localhost:3000/reset_pass/${resetToken}">Restablecer contraseña</a></p>`
         };
 
         try {

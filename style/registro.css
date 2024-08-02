@@ -1,7 +1,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
-  background-color: #F0F3FA !important; 
+  background-color: #FCFCF7 !important; 
 }
 
 /*Register*/
@@ -14,14 +14,13 @@ body {
 }
 
 .form-container form {
-    display: grid;    
-    flex-direction: row;
+    display: flex;    
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    width: 70vw;    
+    width: 60vw;    
     background-color: #fff;
-    border-radius: 5px;
+    border-radius: 40px;
     margin-top: 60px;
     padding: 30px 50px;
     background-color: #F0F3FA;  
@@ -38,13 +37,9 @@ body {
   }
 
 .error {
-  color: #c23030;
-  background-color: rgb(236, 177, 166);
-  display: grid;
-  grid-row: 10px;
-  box-shadow: 2px 2px 5px rgb(83, 81, 81);
-  margin-top: 10px;
-  font-size: 0.8em;
+    color: rgb(219, 125, 125);
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .escondido {

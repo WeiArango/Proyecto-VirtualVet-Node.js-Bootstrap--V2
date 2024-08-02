@@ -32,7 +32,7 @@ document.getElementById("registerPet-form").addEventListener("submit", async (e)
                 tipo_alimentacion: e.target.children.tipo_alimentacion.value,
                 trat_med_ant: e.target.children.trat_med_ant.value,
                 alergias_med: e.target.children.alergias_med.value,
-                cual: e.target.children.cual.value                
+                cual: e.target.children.cual.value,                
             })
         });
 

@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Cuenta</title>
-    
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-    
-    <link rel="stylesheet" href="/style/eliminar_cuenta.css"> 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="/img/navicon.png.png" rel="icon" style="border-radius: 20px;">  
+    <link href="/img/Logo VirtualVet1.svg" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="../style/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="../style/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="../style/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../style/assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">        
-        <form id="eliminarCuenta"><h1>Eliminar Cuenta</h1>
+    <div class="container">
+        <h1>Eliminar Cuenta</h1>
+        <form id="eliminarCuenta">
             <div class="form-group">
-                <label for="email" class="sr-only">Nombre</label>
-                <input type="email" name="email" id="email" placeholder="Digita tu email" required class="form-control mb-3">
-
-                <label for="password" class="sr-only">Password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Digita tu contraseña" required>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Digita tu Email" required>
             </div>
-           
-            <button type="submit" class="btn btn-danger mt-3">Eliminar Cuenta</button>
+            <div class="form-group">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Digita tu contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Eliminar Cuenta</button>
             <a href="/datos_personales/${username}">Regresar</a>
-            <div class="error escondido"></div>
-            <div class="success escondido"></div>
         </form>
-        
+        <div class="error escondido"></div>
+        <div class="success escondido"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
