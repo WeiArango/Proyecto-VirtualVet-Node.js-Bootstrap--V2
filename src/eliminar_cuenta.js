@@ -20,7 +20,13 @@ document.getElementById('eliminarCuenta').addEventListener('submit', async (even
                 alert("Cuenta eliminada exitosamente");
                 document.querySelector('.success').classList.remove('escondido');
                 document.querySelector('.success').textContent = result.message;
+
+                // Limpiar almacenamiento local
+                localStorage.removeItem('jwt'); // Elimina el token JWT
+                localStorage.removeItem('id_usuario'); // Elimina el ID de usuario
+                localStorage.removeItem('username')
                 window.location.href = result.redirect;
+
             } else {
                 document.querySelector('.error').classList.remove('escondido');
                 document.querySelector('.error').textContent = result.message;

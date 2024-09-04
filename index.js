@@ -194,7 +194,7 @@ app.post("/recuperarPassword", (req, res) => {
             from: 'VirtualVet <onboarding@resend.dev>', 
             to: email,
             subject: `Recuperación de contraseña para usuario ${email}`,
-            html: `<p>Haga click en el siguiente enlace para restablecer su contraseña: <a href="http://localhost:3000/reset_pass/${resetToken}">Restablecer contraseña</a></p>`
+            html: `<p>Haga click en el siguiente enlace para restablecer su contraseña: <strong><a href="http://localhost:3000/reset_pass/${resetToken}">Restablecer contraseña</a><strong></p>`
         };
 
         try {
@@ -224,27 +224,31 @@ app.post('/cambiarPassword', (req, res) => {
         return res.status(400).json({ message: 'Las contraseñas no coinciden' });
     }
 
-    const query = 'SELECT * FROM usuario WHERE resetPasswordToken = ? AND resetPasswordExpires < ?';
+    const query = 'SELECT * FROM usuario WHERE resetPasswordToken = ? AND resetPasswordExpires > ?';
     conexión.query(query, [resetToken, Date.now()], (err, results) => {
+    if (err) {
+        console.error("Error en la consulta:", err);
+        return res.status(500).json({ message: 'Error en la base de datos al verificar el token' });
+    }
+    
+    if (results.length === 0) {
+        return res.status(400).json({ message: 'El token es inválido o ha expirado' });
+    }
+
+    const usuario = results[0];
+
+    // Validación adicional de la nueva contraseña podría incluirse aquí
+    const hashedPassword = bcryptjs.hashSync(new_password, 10);
+
+    const updateQuery = 'UPDATE usuario SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE email = ?';
+    conexión.query(updateQuery, [hashedPassword, usuario.email], (err, result) => {
         if (err) {
-            console.error("Error en la consulta:", err);
-            return res.status(500).json({ message: 'Error al restablecer la contraseña' });
-        }
-        if (results.length === 0) {
-            return res.status(400).send('El token es inválido o ha expirado');
+            console.error("Error en la actualización:", err);
+            return res.status(500).json({ message: 'Error al actualizar la contraseña en la base de datos' });
         }
 
-        const usuario = results[0];
-        const hashedPassword = bcryptjs.hashSync(new_password, 10);
-
-        const updateQuery = 'UPDATE usuario SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL WHERE email = ?';
-        conexión.query(updateQuery, [hashedPassword, usuario.email], (err, result) => {
-            if (err) {
-                console.error("Error en la actualización:", err);
-                return res.status(500).json({ message: 'Error al actualizar la contraseña' });
-            }
-            res.json({ message: `Contraseña actualizada exitosamente para usuario ${usuario.username}` });
-            console.log(`Contraseña restablecida para usuario ${usuario.username}`);
+        res.json({ message: `Contraseña actualizada exitosamente para usuario ${usuario.username}` });
+        console.log(`Contraseña restablecida para usuario ${usuario.username}`);
         });
     });
 });

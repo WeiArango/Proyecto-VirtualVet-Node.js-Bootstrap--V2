@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${mascota.nombre}</td>
                     <td>${mascota.especie}</td>
                     <td>${mascota.raza}</td>
-                    <td>${mascota.edad_años} años</td>
+                    <td>${mascota.edadenanios} años</td>
                     <td>${mascota.sexo}</td>
                     <td>${mascota.peso}</td>
                     <td>${mascota.vacunacion}</td>

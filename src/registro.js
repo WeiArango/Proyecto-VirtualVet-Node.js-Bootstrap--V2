@@ -29,8 +29,13 @@ document.getElementById("register-form").addEventListener("submit", async(e) => 
         }) 
         
     }); 
-    if(!res.ok) return mensajeError.classList.toggle("escondido", false);    
+    if(!res.ok) return mensajeError.classList.toggle("escondido", false);  
+      
     const resJSON = await res.json();
+    if(resJSON.message) {
+        alert(resJSON.message)
+    }
+
     if(resJSON.redirect) {
         window.location.href = resJSON.redirect;
     }     
