@@ -478,6 +478,49 @@ app.get('/mascotas', (req, res) => {
     });
 });
 
+app.put('/datos_mascotas', async function (req, res) {
+    try{
+        const datos = req.body;
+
+        const nombre = datos.nombre;
+        const especie = datos.especie;
+        const raza = datos.raza;
+        const fecha_nto = datos.fecha_nto;
+        const sexo = datos.sexo;
+        const peso = datos.peso;
+        const vacunacion = datos.vacunacion;
+        const desparasitacion = datos.desparasitacion;
+        const tipo_vivienda = datos.tipo_vivienda;
+        const tipo_alimentacion = datos.tipo_alimentacion;
+        const trat_med_ant = datos.trat_med_ant;
+        const alergias_med = datos.alergias_med;
+        const cual = datos.cual;
+
+        // Verificar si la mascota existe
+        const buscar = "SELECT * FROM mascotas WHERE id_mascota = ?";
+        const rows = await consultarBaseDeDatos(buscar, [id_mascota]);
+
+        if(rows.length === 0) {
+            console.log(`Mascota ${id_mascota.nombre} no encontrado`);
+            return res.status(404).send(`Mascota ${id_mascota.nombre} no encontrado`);
+        }
+
+        // Consulta para actualizar los datos de la mascota
+        const actualizar = `
+            UPDATE id_mascota
+            SET nombre = ?, especie = ?, raza = ?, fecha_nto = ?, sexo = ?, peso = ?, vacunacion = ?, desparasitacion = ?, tipo_vivienda = ?, tipo_alimentacion = ?, trat_med_ant = ?, alergias_med = ?, cual = ?
+            WHERE id_mascota = ?
+        `;
+        await consultarBaseDeDatos(actualizar, [nombre, especie, raza, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual]);
+
+        console.log(`Datos de la mascota ${id_mascota.nombre} actualizados exitosamente`);
+        res.status(200).send(`Datos de la mascota ${id_mascota.nombre} actualizados exitosamente`)
+    } catch (error) {
+        console.error("Error al actualizar los datos de la mascota:", error)
+        res.status(500).send("Error interno del servidor")
+    }
+});
+
 // RUTA PARA ELIMINAR LA CUENTA DE USUARIO
 app.post("/eliminarCuenta", async (req, res) => {
     try {

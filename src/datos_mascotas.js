@@ -31,8 +31,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${mascota.trat_med_ant}</td>
                     <td>${mascota.alergias_med}</td>
                     <td>${mascota.cual}</td>
+                    <td><a href="#" class="editar" data-id="${mascota.id_mascota}"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="#" class="eliminar"><i class="fas fa-trash-alt"></i></a></td>
                 `;
                 mascotasTableBody.appendChild(row);
+            });
+
+            // Agregar event listeners a los botones de editar
+            document.querySelectorAll('.editar').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault(); // Evita el envío del formulario por defecto
+                    const mascotaId = button.getAttribute('id_mascota');
+                    const mascota = data.find(m => m.id == mascotaId);
+
+                    // Puedes añadir un campo oculto con el ID de la mascota si es necesario
+                    document.getElementById('id_mascota').value = mascota.id_mascota;
+
+                    // Rellenar el formulario con los datos de la mascota seleccionada
+                    document.getElementById('nombre').value = mascota.nombre;
+                    document.getElementById('especie').value = mascota.especie;
+                    document.getElementById('raza').value = mascota.raza;
+                    document.getElementById('fecha_nto').value = mascota.fecha_nato;
+                    document.getElementById('sexo').value = mascota.sexo;
+                    document.getElementById('peso').value = mascota.peso;
+                    document.getElementById('vacunacion').value = mascota.vacunacion;
+                    document.getElementById('desparasitacion').value = mascota.desparasitacion;
+                    document.getElementById('vivienda').value = mascota.tipo_vivienda;
+                    document.getElementById('alimento').value = mascota.tipo_alimentacion;
+                    document.getElementById('trat_previos').value = mascota.trat_med_ant;
+                    document.getElementById('allergias').value = mascota.alergias_med;
+                    document.getElementById('cual').value = mascota.cual;
+
+                    
+                });
             });
         })
         .catch(error => {

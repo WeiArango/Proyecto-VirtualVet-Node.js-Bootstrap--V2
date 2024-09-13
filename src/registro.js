@@ -28,15 +28,19 @@ document.getElementById("register-form").addEventListener("submit", async(e) => 
             tipoUsuario: e.target.children.tipoUsuario.value        
         }) 
         
-    }); 
-    if(!res.ok) return mensajeError.classList.toggle("escondido", false);  
-      
+    });     
+        
     const resJSON = await res.json();
     if(resJSON.message) {
         alert(resJSON.message)
     }
 
+    if (!res.ok) {
+        mensajeError.classList.toggle("escondido", false);       
+    }
+
     if(resJSON.redirect) {
         window.location.href = resJSON.redirect;
-    }     
+    }    
+    
 })

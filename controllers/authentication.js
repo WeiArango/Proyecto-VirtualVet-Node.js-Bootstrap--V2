@@ -108,8 +108,8 @@ async function registro(req, res) {
 
     // const recaptchaResponse = req.body['g-recaptcha-response'];
 
-    if (!nombre || !email || !username || !password || !tipoIdentificacion || !tipoUsuario) {
-        return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos" });
+    if (!email || !username || !password) {
+        return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos marcados con *" });
     }  
 
     // Consulta para verificar que ni el correo electrónico ni el nombre de usuario existan en la base de datos

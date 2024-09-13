@@ -20,8 +20,10 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         })
     });
 
-    if (!res.ok) {
-        mensajeError.classList.toggle("escondido", false);
+    if (!username || !password) {
+        alert("Por favor digita todos los campos")        
+    } else if (!res.ok) {
+        mensajeError.classList.toggle("escondido", false);       
     } else {
         const resJson = await res.json();
         localStorage.setItem('username', username);
