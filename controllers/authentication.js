@@ -3,7 +3,7 @@ import JsonWebToken from "jsonwebtoken";//Librerías para generar pass (tokens) 
 import dotenv from "dotenv";
 dotenv.config(); //Librería que nos ayuda a crear variables de entorno, osea un lugar para poner claves que no deberían publicarse nunca o no deberían estar a la vista del usuario final. Vamos a crear un archivo con el nombre .env en la carpeta raíz para poder crear este tipo de claves (Importante nunca compartir ese tipo de claves e ingresarla al archivo .gitignore junto)
 //Para realizar la consulta a la base de datos
-import mysql from "mysql";
+import mysql from "mysql2";
 
 // Configuración y creación de la conexión a la base de datos
 const conexión = mysql.createConnection({

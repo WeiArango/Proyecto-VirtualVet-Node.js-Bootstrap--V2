@@ -25,7 +25,7 @@ const app = express();
 
 
 //Para realizar la consulta a la base de datos
-import mysql from "mysql";
+import mysql from "mysql2";
 
 //Para realizar la conexión a la base de datos
 const conexión = mysql.createConnection({

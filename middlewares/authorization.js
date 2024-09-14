@@ -1,6 +1,6 @@
 import JsonWebToken from "jsonwebtoken";
 import dotenv from "dotenv";
-import mysql from "mysql";
+import mysql from "mysql2";
 
 const conexión = mysql.createConnection({
     host: process.env.host,
