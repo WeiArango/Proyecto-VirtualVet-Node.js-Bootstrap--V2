@@ -24,6 +24,7 @@ import bodyParser from "body-parser";
 const app = express();
 
 
+
 //Para realizar la consulta a la base de datos
 import mysql from "mysql2";
 
@@ -457,7 +458,7 @@ app.post("/modificarPassword", async (req, res) => {
 //RUTA PARA OBTENER DATOS DE MASCOTAS
 app.get('/mascotas', (req, res) => {
     const idUsuario = req.query.id_usuario; // Usar req.query para obtener el parámetro de consulta
-    console.log('Id usuario recibido:', idUsuario); // Debugging
+    console.log('Id usuario recibido:', idUsuario); 
     if (!idUsuario) {
         res.status(400).send('Falta el parámetro id_usuario');
         return;
@@ -478,46 +479,66 @@ app.get('/mascotas', (req, res) => {
     });
 });
 
+//Ruta para editar datos de mascotas
 app.put('/datos_mascotas', async function (req, res) {
-    try{
+    try {
         const datos = req.body;
+        const primary_key = datos.primary_key; // Usar primary_key aquí
+        const {
+            nombre, especie, raza, fecha_nto, sexo, peso, vacunacion, 
+            desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, 
+            alergias_med, cual
+        } = datos;
 
-        const nombre = datos.nombre;
-        const especie = datos.especie;
-        const raza = datos.raza;
-        const fecha_nto = datos.fecha_nto;
-        const sexo = datos.sexo;
-        const peso = datos.peso;
-        const vacunacion = datos.vacunacion;
-        const desparasitacion = datos.desparasitacion;
-        const tipo_vivienda = datos.tipo_vivienda;
-        const tipo_alimentacion = datos.tipo_alimentacion;
-        const trat_med_ant = datos.trat_med_ant;
-        const alergias_med = datos.alergias_med;
-        const cual = datos.cual;
+        // Verificar si la mascota existe usando primary_key
+        const buscar = "SELECT * FROM mascotas WHERE primary_key = ?";
+        const rows = await consultarBaseDeDatos(buscar, [primary_key]);
 
-        // Verificar si la mascota existe
-        const buscar = "SELECT * FROM mascotas WHERE id_mascota = ?";
-        const rows = await consultarBaseDeDatos(buscar, [id_mascota]);
-
-        if(rows.length === 0) {
-            console.log(`Mascota ${id_mascota.nombre} no encontrado`);
-            return res.status(404).send(`Mascota ${id_mascota.nombre} no encontrado`);
+        if (rows.length === 0) {
+            console.log(`Mascota ${primary_key} no encontrada`);
+            return res.status(404).send(`Mascota ${primary_key} no encontrada`);
         }
 
         // Consulta para actualizar los datos de la mascota
         const actualizar = `
-            UPDATE id_mascota
-            SET nombre = ?, especie = ?, raza = ?, fecha_nto = ?, sexo = ?, peso = ?, vacunacion = ?, desparasitacion = ?, tipo_vivienda = ?, tipo_alimentacion = ?, trat_med_ant = ?, alergias_med = ?, cual = ?
-            WHERE id_mascota = ?
+            UPDATE mascotas
+            SET nombre = ?, especie = ?, raza = ?, fecha_nto = ?, sexo = ?, peso = ?, 
+                vacunacion = ?, desparasitacion = ?, tipo_vivienda = ?, tipo_alimentacion = ?, 
+                trat_med_ant = ?, alergias_med = ?, cual = ?
+            WHERE primary_key = ?
         `;
-        await consultarBaseDeDatos(actualizar, [nombre, especie, raza, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual]);
 
-        console.log(`Datos de la mascota ${id_mascota.nombre} actualizados exitosamente`);
-        res.status(200).send(`Datos de la mascota ${id_mascota.nombre} actualizados exitosamente`)
+        await consultarBaseDeDatos(actualizar, [
+            nombre, especie, raza, fecha_nto, sexo, peso, vacunacion, 
+            desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, 
+            alergias_med, cual, primary_key // Primary_key como último valor en la lista
+        ]);
+
+        console.log(`Datos de la mascota ${nombre} actualizados exitosamente`);
+        res.status(200).send(`Datos de la mascota ${nombre} actualizados exitosamente`);
     } catch (error) {
-        console.error("Error al actualizar los datos de la mascota:", error)
-        res.status(500).send("Error interno del servidor")
+        console.error("Error al actualizar los datos de la mascota:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
+
+//Ruta para eliminar una mascota
+app.delete('/datos_mascotas/:id', async function (req, res) {
+    try {
+        const primary_key = req.params.id;
+
+        // Consulta para eliminar la mascota por primary_key
+        const eliminarQuery = "DELETE FROM mascotas WHERE primary_key = ?";
+        const result = await consultarBaseDeDatos(eliminarQuery, [primary_key]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).send(`Mascota con id ${primary_key} no encontrada`);
+        }
+
+        res.status(200).send(`Mascota con id ${primary_key} eliminada exitosamente`);
+    } catch (error) {
+        console.error("Error al eliminar la mascota:", error);
+        res.status(500).send("Error interno del servidor");
     }
 });
 

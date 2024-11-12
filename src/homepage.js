@@ -16,7 +16,7 @@ document.getElementsByTagName("button")[0].addEventListener("click", () => {
     document.location.href = "/";
     
     // Limpiar el localStorage
-    localStorage.removeItem("jwt");
+    //localStorage.removeItem("jwt");
     localStorage.removeItem("username");
     localStorage.removeItem("id_usuario");
     localStorage.removeItem("resetPasswordToken");

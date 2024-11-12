@@ -65,3 +65,8 @@ document.getElementById("registerPet-form").addEventListener("submit", async (e)
     }
 });
 
+
+
+      
+    
+

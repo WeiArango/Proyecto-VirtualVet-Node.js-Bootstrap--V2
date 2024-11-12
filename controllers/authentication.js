@@ -277,9 +277,11 @@ async function mascotas(req, res) {
         const edadEnAnios = edadEnMilisegundos / (1000 * 60 * 60 * 24 * 365.25);
         const edadenanios = edadEnAnios.toFixed(1); // Redondear a un decimal
 
+       
+
         let registrarMascota = "INSERT INTO mascotas (id_mascota, nombre, especie, raza, edadenanios, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        conexión.query(registrarMascota, [id_mascota, nombre, especie, raza, edadEnAnios, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual], (error) => {
+        conexión.query(registrarMascota, [id_mascota, nombre, especie, raza, edadenanios, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual], (error) => {
             if (error) {
                 throw error;
             } else {
