@@ -27,6 +27,7 @@ const app = express();
 
 //Para realizar la consulta a la base de datos
 import mysql from "mysql2";
+import { console } from "inspector";
 
 //Para realizar la conexión a la base de datos
 const conexión = mysql.createConnection({
@@ -128,45 +129,7 @@ async function consultarBaseDeDatos(query, values) {
 }
 
 //LOGIN DE USUARIOS
-app.post("/validar", authentication.login, (req, res) => {
-     const datos = req.body;
-     console.log(datos);
-
-     let username = datos.username;    
-     let password = datos.password;    
-
-     //Para buscar usuarios antes de login y comparar si ya existe
-     let buscar = "SELECT id:_usuario, username, password FROM usuario WHERE username = ? AND password = ?";
-
-     //Ejecutar la consulta de búsqueda
-     conexión.query(buscar, [username, password], (error, rows) => {
-         if (error) {
-             console.error("Error al buscar usuario:", error);
-             return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
-         }
-
-         // Verificar si hay resultados en la consulta
-         if (rows.length > 0) {
-             // El usuario existe, se puede realizar la acción de ingreso
-             console.log(`Bienvenido ${username} a nuestro portal`);
-
-            const user = rows[0];  // Suponemos que sólo hay un usuario con ese username y password
-            const id_usuario = user.id_usuario;
-
-             return res.send({ 
-                status: "ok", 
-                message: "Usuario Registrado", 
-                token: `${token}`, 
-                redirect: "/homepage.ejs",
-                id_usuario: id_usuario 
-            });
-         } else {
-             // El usuario no existe
-             console.log("Usuario no encontrado");
-             return res.status(404).send({ status: "Error", message: "Usuario no encontrado" });
-         }
-     });
-});
+app.post("/validar", authentication.login);
 
 //CONFIGURACIÓN DE RESEND PARA RESTABLECIMIENTO DE CONTRASEÑA
 const resend = new Resend(process.env.API_KEY_RESEND);  // Asegúrate de reemplazar con tu API key

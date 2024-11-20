@@ -19,76 +19,112 @@ En este código, se realiza una consulta a la base de datos para buscar el usuar
 /*Archivo Controlador de la autenticación*/
 
 
-async function login(req, res) { 
+async function login(req, res) {
     const username = req.body.username;
     const password = req.body.password;
-    // const recaptchaResponse = req.body['g-recaptcha-response'];    
-    
+
     if (!username || !password) {
         return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos" });
     }
 
-    // Verificar reCAPTCHA
-    // const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-    // const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaResponse}&remoteip=${req.connection.remoteAddress}`;
+    const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";
+    const buscarAdminQuery = "SELECT * FROM admin WHERE username = ?";
 
-    // try {
-    //     const captchaVerification = await fetch(verificationURL, { method: "POST" });
-    //     const captchaData = await captchaVerification.json();
+    try {
+        // Buscar en la tabla `usuario`
+        const [usuario] = await new Promise((resolve, reject) => {
+            conexión.query(buscarUsuarioQuery, [username], (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            });
+        });
 
-    //     if (!captchaData.success) {
-    //         return res.status(400).send({ status: "Error", message: "Error de verificación reCAPTCHA. Inténtalo de nuevo." });
-    //     }
+        if (usuario) {
+            const passwordMatch = await bcryptjs.compare(password, usuario.password);
+            if (passwordMatch) {
+                const token = JsonWebToken.sign(
+                    { username: usuario.username },
+                    process.env.JWT_SECRET,
+                    { expiresIn: process.env.JWT_EXPIRATION }
+                );
 
-    const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";        
-    
-    conexión.query(buscarUsuarioQuery, [username], async function(error, lista) {
-        if (error) {
-            throw error;
-        } else {            
-            if (lista.length > 0) {
-                const usuario = lista[0];  
-                const id_usuario = usuario.id_usuario;
-                
-                const passwordMatch = await bcryptjs.compare(password, usuario.password);
-                if (passwordMatch) {
-                    const token = JsonWebToken.sign(
-                        { username: usuario.username },
-                        process.env.JWT_SECRET, 
-                        { expiresIn: process.env.JWT_EXPIRATION }
-                    );
+                const cookieOption = {
+                    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                    path: "/",
+                    sameSite: "None",
+                    secure: true,
+                };
 
-                    const cookieOption = {
-                        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-                        path: "/",
-                        sameSite: "None",
-                        secure: true        
-                    };
+                res.cookie("jwt", token, cookieOption);
 
-                    res.cookie("jwt", token, cookieOption);
-
-                    const responseData = {
-                        status: "ok",
-                        message: "Usuario Validado",
-                        token: token,
-                        redirect: "/homepage",
-                        usuario: {
-                            nombre: usuario.nombre,
-                            username: usuario.username,
-                            id_usuario: id_usuario
-                        }                                              
-                    };
-
-                    return res.send(responseData);
-                } else {
-                    return res.status(401).send({ status: "Error", message: "Usuario o Contraseña incorrectos" });
-                }
+                return res.json({
+                    status: "ok",
+                    message: "Usuario Validado",
+                    token,
+                    redirect: "/homepage", // Redirige a la página de usuario
+                    usuario: {
+                        nombre: usuario.nombre,
+                        username: usuario.username,
+                        id_usuario: usuario.id_usuario,
+                    },
+                });
             } else {
-                return res.status(404).send({ status: "Error", message: "Usuario no encontrado" });
-            }                                           
-        }    
-    });
+                return res.status(401).send({ status: "Error", message: "Usuario o Contraseña incorrectos" });
+            }
+        }
+
+        // Si no se encuentra en `usuario`, buscar en la tabla `admin`
+        const [admin] = await new Promise((resolve, reject) => {
+            conexión.query(buscarAdminQuery, [username], (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            });
+        });
+
+        if (admin) {
+            const passwordMatch = await bcryptjs.compare(password, admin.password);
+            if (passwordMatch) {
+                const token = JsonWebToken.sign(
+                    { username: admin.username },
+                    process.env.JWT_SECRET,
+                    { expiresIn: process.env.JWT_EXPIRATION }
+                );
+
+                const cookieOption = {
+                    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+                    path: "/",
+                    sameSite: "None",
+                    secure: true,
+                };
+
+                res.cookie("jwt", token, cookieOption);
+
+                return res.json({
+                    status: "ok",
+                    message: "Admin Validado",
+                    token,
+                    redirect: "/admin", // Redirige a la página de admin
+                    admin: {
+                        nombre: admin.nombre,
+                        username: admin.username,
+                        id_admin: admin.id_admin,
+                    },
+                });
+            } else {
+                return res.status(401).send({ status: "Error", message: "Usuario o Contraseña incorrectos" });
+            }
+        }
+
+        // Si no se encuentra en ninguna tabla
+        return res.status(404).send({ status: "Error", message: "Usuario no encontrado" });
+
+    } catch (error) {
+        console.error("Error al validar usuario/admin:", error);
+        return res.status(500).send({ status: "Error", message: "Error interno del servidor" });
+    }
 }
+
+
 
 /* CONSULTA PARA BUSCAR EL USUARIO EN LA BASE DE DATOS
 En este código, se realiza una consulta a la base de datos para buscar el usuario por su nombre (nombre). Luego se verifica que el usuario ingresado no exista en la base de datos */
@@ -103,18 +139,16 @@ async function registro(req, res) {
         password,
         tipoIdentificacion,
         identificacion,
-        tipoUsuario
+        tipoUsuario // Este es el valor "Administrador" o "Usuario"
     } = req.body;
-
-    // const recaptchaResponse = req.body['g-recaptcha-response'];
 
     if (!email || !username || !password) {
         return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos marcados con *" });
-    }  
+    }
 
-    // Consulta para verificar que ni el correo electrónico ni el nombre de usuario existan en la base de datos
+    // Verificar si ya existe el correo o el nombre de usuario
     const buscarUsuarioQuery = "SELECT * FROM usuario WHERE email = ? OR username = ?";
-    
+
     conexión.query(buscarUsuarioQuery, [email, username], async (error, rows) => {
         if (error) {
             throw error;
@@ -127,7 +161,7 @@ async function registro(req, res) {
                     return res.status(400).send({ status: "Error", message: "Este nombre de usuario ya está en uso" });
                 }
             } else {
-                // Ni el correo electrónico ni el nombre de usuario existen, proceder con el registro
+                // Si no existe, registrar el nuevo usuario
                 const salt = await bcryptjs.genSalt(10);
                 const hashPassword = await bcryptjs.hash(password, salt);
                 
@@ -140,18 +174,19 @@ async function registro(req, res) {
                     password: hashPassword,
                     tipoIdentificacion,
                     identificacion,
-                    tipoUsuario
+                    tipoUsuario // Almacenamos si es Administrador o Usuario
                 };
-                console.log("Nuevo Usuario", nuevoUsuario)
-                
-                // Insertar el nuevo usuario en la base de datos
-                const registrarUsuario = "INSERT INTO usuario (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
+
+                // Verifica si el tipo de usuario es Administrador
+                const tabla = tipoUsuario === 'Administrador' ? 'admin' : 'usuario';
+
+                const registrarUsuario = `INSERT INTO ${tabla} (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
                 conexión.query(registrarUsuario, [nombre, email, username, celular, direccion, hashPassword, tipoIdentificacion, identificacion, tipoUsuario], (error) => {
                     if (error) {
                         throw error;
                     } else {
-                        const successMessage = `${nombre} fue registrado exitosamente`
+                        const successMessage = `${nombre} fue registrado exitosamente`;
                         console.log(`Usuario ${username} creado exitosamente`);
                         res.status(201).send({ status: "ok", message: successMessage, redirect: "/" });
                     }
@@ -160,6 +195,8 @@ async function registro(req, res) {
         }
     });
 }
+
+
  
 
 async function recover_pass(req, res) {

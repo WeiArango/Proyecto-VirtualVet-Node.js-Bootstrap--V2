@@ -14,19 +14,26 @@ dotenv.config();
 
 async function soloHomepage(req, res, next) {
     const logueado = await revisarCookie(req, res);
+
+    // Verifica que el usuario esté logueado y que no tenga el rol 'admin'
+    if (logueado && logueado.role === 'admin') {
+        return res.redirect("/admin"); // Redirige al admin si el usuario es admin
+    }
+
     if (logueado) { 
-        return next();
+        return next(); // Permite acceso si es un usuario general
     } else {
         if (!res.headersSent) {
-            return res.redirect("/");
+            return res.redirect("/"); // Redirige al login si no está logueado
         }
     }
 }
 
+
 async function soloPublico(req, res, next) {
     const logueado = await revisarCookie(req, res);
     if (!logueado) { 
-        return next();
+        return next();       
     } else {
         if (!res.headersSent) {
             return res.redirect("/homepage");
@@ -36,14 +43,17 @@ async function soloPublico(req, res, next) {
 
 async function soloAdmin(req, res, next) {
     const logueado = await revisarCookie(req, res);
-    if (!logueado) { 
+
+    // Verifica que el usuario esté logueado y tenga rol 'admin'
+    if (logueado && logueado.role === 'admin') {
         return next();
     } else {
         if (!res.headersSent) {
-            return res.redirect("/admin");
+            return res.redirect("/"); // Redirige al login si no es admin o no está logueado
         }
     }
 }
+
 
 async function revisarCookie(req, res) {
     try {
@@ -60,25 +70,43 @@ async function revisarCookie(req, res) {
         const decodificada = JsonWebToken.verify(cookieJWT, process.env.JWT_SECRET);
         console.log("Decodificado:", decodificada);
 
-        // Consulta directa a la base de datos para verificar si el usuario existe
-        const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";
-
-        return new Promise((resolve, reject) => {
-            conexión.query(buscarUsuarioQuery, [decodificada.username], function(error, lista) {
+        // Consultar si el username existe en la tabla `admin`
+        const buscarAdminQuery = "SELECT * FROM admin WHERE username = ?";
+        const admin = await new Promise((resolve, reject) => {
+            conexión.query(buscarAdminQuery, [decodificada.username], function(error, results) {
                 if (error) {
-                    console.error("Error al consultar la base de datos:", error.message);
+                    console.error("Error al consultar la base de datos (admin):", error.message);
                     return reject(false);
                 }
-
-                if (lista.length > 0) {
-                    console.log("Usuario existente:", lista[0]);
-                    return resolve(true); // El usuario existe, continuar con la ejecución
-                } else {
-                    console.log("Usuario no encontrado en la base de datos.");
-                    return resolve(false); // El usuario no existe, redirigir
-                }
+                resolve(results);
             });
         });
+
+        if (admin && admin.length > 0) {
+            console.log("Usuario encontrado en la tabla admin:", admin[0]);
+            return { role: 'admin', username: decodificada.username }; // Si es admin, devolver rol
+        }
+
+        // Si no está en la tabla `admin`, buscar en la tabla `usuario`
+        const buscarUsuarioQuery = "SELECT * FROM usuario WHERE username = ?";
+        const usuario = await new Promise((resolve, reject) => {
+            conexión.query(buscarUsuarioQuery, [decodificada.username], function(error, results) {
+                if (error) {
+                    console.error("Error al consultar la base de datos (usuario):", error.message);
+                    return reject(false);
+                }
+                resolve(results);
+            });
+        });
+
+        if (usuario && usuario.length > 0) {
+            console.log("Usuario encontrado en la tabla usuario:", usuario[0]);
+            return { role: 'user', username: decodificada.username }; // Si es usuario, devolver rol
+        }
+
+        // Si no se encuentra en ninguna de las tablas
+        console.log("Usuario no encontrado en ninguna de las tablas.");
+        return false;
 
     } catch (error) {
         console.error("Error al decodificar JWT:", error.message);
