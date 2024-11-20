@@ -34,6 +34,17 @@ async function soloPublico(req, res, next) {
     }
 }
 
+async function soloAdmin(req, res, next) {
+    const logueado = await revisarCookie(req, res);
+    if (!logueado) { 
+        return next();
+    } else {
+        if (!res.headersSent) {
+            return res.redirect("/admin");
+        }
+    }
+}
+
 async function revisarCookie(req, res) {
     try {
         if (!req.headers.cookie) {
@@ -77,5 +88,6 @@ async function revisarCookie(req, res) {
 
 export const methods = {
     soloHomepage,
-    soloPublico
+    soloPublico,
+    soloAdmin
 };

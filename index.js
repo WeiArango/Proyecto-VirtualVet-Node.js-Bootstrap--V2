@@ -72,6 +72,7 @@ app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homep
 app.get("/mascotas/:id_mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
 app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
 app.get("/eliminar_cuenta", authorization.soloHomepage, (req, res) => res.render("eliminar_cuenta"));
+app.get("/admin", authorization.soloAdmin, (req, res) => res.render("admin"));
 //Endpoints
 
 //Configuración de la ruta para obtener datos del usuario

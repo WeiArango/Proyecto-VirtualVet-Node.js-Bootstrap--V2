@@ -1,0 +1,754 @@
+body {
+    font-family: "Manrope", sans-serif;
+    color: #444444;
+  }
+
+  a {
+    color: #1977cc;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #3291e6;
+    text-decoration: none;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Raleway", sans-serif;
+  }
+
+  /*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {  
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background: #fff;
+  transition: all 0.5s;
+  z-index: 997;
+  padding: 0;
+  margin: 30px auto;  
+  box-shadow: 0px 2px 15px rgba(25, 119, 204, 0.1);
+  border-radius: 10px;
+  }
+  
+  .container .header-scrolled {
+    top: 0;
+  }
+  
+  .container .logo {    
+    margin: 0;
+    padding: 0;  
+    width: 30px;  
+  }
+  
+  .container .logo a {
+    color: #2c4964;
+  }
+  
+  .container .logo img {
+    max-height: 50px;
+    max-width: 50px;
+  }
+  
+  .container .logout {
+    display: flex;
+  }   
+
+  .container-modal {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+  }
+
+        
+  
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+/**
+* Desktop Navigation 
+*/
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* Para que el contenido se distribuye entre los extremos */
+}
+
+.navUser {
+  margin-right: auto; /* Hace que el texto 'Bienvenido' se desplace hacia la izquierda */
+}
+
+.Btn-logout {
+  display: flex;  
+  top: -10px; 
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  color: white;
+  background: #ad5389;
+  background: linear-gradient(to right, #00074d, #0d5891, #1977cc);
+}  
+  
+  
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+  }
+  
+  .navbar li {
+    position: relative;
+    margin-left: 20px;
+  }
+  
+  .navbar a,
+  .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 10px;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    color: #626262;
+    white-space: nowrap;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  .navbar a i,
+  .navbar a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+  }
+  
+  .navbar a:hover,
+  .navbar .active,
+  .navbar .active:focus,
+  .navbar li:hover>a {
+    color: #1977cc;
+  }  
+  
+  /**
+  * Mobile Navigation 
+  */
+  .mobile-nav-toggle {
+    color: #555555;
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+    line-height: 0;
+    transition: 0.5s;
+  }
+  
+  .mobile-nav-toggle.bi-x {
+    color: #fff;
+  }
+  
+  @media (max-width: 991px) {
+    .mobile-nav-toggle {
+      display: block;
+    }
+  
+    .navbar ul {
+      display: none;
+    }
+  }
+  
+  .navbar-mobile {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(60, 60, 60, 0.9);
+    transition: 0.3s;
+    z-index: 999;
+  }
+  
+  .navbar-mobile .mobile-nav-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+  
+  .navbar-mobile ul {
+    display: block;
+    position: absolute;
+    top: 55px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    padding: 10px 0;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow-y: auto;
+    transition: 0.3s;
+  }
+  
+  .navbar-mobile a,
+  .navbar-mobile a:focus {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: #555555;
+  }
+  
+  .navbar-mobile a:hover,
+  .navbar-mobile .active,
+  .navbar-mobile li:hover>a {
+    color: #1977cc;
+  }
+   
+  
+  @media (min-width: 320px) and (max-width: 480px) {  
+  
+    #header .logo img {
+      max-height: 50%;
+      max-width: 50%;
+      position: absolute;
+      left: 70px;
+      top: 20px;
+    }
+    #header #btn-navCita {
+      width: 140px;
+      height: 40px;
+      margin: 50px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      font-family: inherit;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: -30px;   
+      font-size: small;
+    }
+    #header #btn-navCita svg {          
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+      width: 20px;
+    }
+    #header #btn-navCita span {
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+      font-family: "Manrope", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 200;      
+    }
+    #header #btn-navCita:hover svg {
+      transform: translateX(450%);
+    }
+  
+    .Btn-logout {
+      display: flex;
+      position: absolute;
+      margin-top: 30px;    
+      left: 80px;
+      align-items: center;
+      justify-content: flex-start;
+      width: 45px;
+      height: 45px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition-duration: .3s;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+      color: white;
+      background: #ad5389;
+      background: linear-gradient(to right, #00074d, #0d5891, #1977cc);
+    }  
+    
+    .logout {
+      width: 100%;
+      transition-duration: .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logout svg {
+      width: 17px;
+    }
+    
+    .logout svg path {
+      fill: white;
+    }
+    /* text */
+    .text-logout {     
+      display: none;     
+      font-family: "Manrope", "Raleway", sans-serif;
+      color: w#FEFEFE;
+      font-size: 0.7rem;
+      margin-left: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      z-index: 100;
+      transition-duration: .3s;
+    }
+    /* hover effect on button width */
+    .Btn-logout:hover {
+      width: 125px;
+      border-radius: 40px;
+      transition-duration: .3s;
+      .text-logout {
+        display: flex;
+      }
+    }
+    
+    .Btn-logout:hover .sign {
+      width: 30%;
+      transition-duration: .3s;
+      padding-left: 20px;
+    }
+    /* hover effect button's text */
+    .Btn-logout:hover .text {
+      opacity: 1;
+      width: 70%;
+      transition-duration: .3s;
+      padding-right: 10px;
+    }
+    /* button click effect*/
+    .Btn-logout:active {
+      transform: translate(2px ,2px);
+    }
+    
+    .mobile-nav-toggle {
+      display: flex;
+    }
+  
+    .navbar ul {
+      display: none;
+    }    
+  
+    .mobile-nav-toggle {
+      color: #555555;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      line-height: 0;
+      transition: 0.5s;
+    }
+  
+    .mobile-nav-toggle.bi-x {
+      color: #fff;
+      position: fixed;
+      top: 20px;
+      left: 200px;
+      color: rgba(28, 47, 65, 0.9);
+      opacity: 0.9;
+      }
+  
+    .navbar-mobile {
+      position: fixed;
+      overflow: hidden;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background: rgba(60, 60, 60, 0.9);
+      transition: 0.3s;
+      z-index: 999;
+    }
+
+    .navbar-mobile ul {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 100px;
+        bottom: 0;
+        left: 0;
+        padding: 10px 0;
+        border-radius: 20px;
+        background-color: #fff;
+        overflow-y: auto;
+        transition: 0.3s;
+      }  
+    
+      .navbar-mobile a,
+      .navbar-mobile a:focus {
+        padding: 10px 20px;
+        font-size: 15px;
+        color: #555555;
+      }
+    
+      .navbar-mobile a:hover,
+      .navbar-mobile .active,
+      .navbar-mobile li:hover>a {
+        color: #1977cc;
+      }
+      
+    }
+    
+    @media (min-width: 481px) and (max-width: 999px) {  
+    
+      .mobile-nav-toggle {
+        display: flex;
+      }
+    
+      .navbar ul {
+        display: none;
+      }  
+    
+      .Btn-logout {
+        display: flex;
+        position: absolute;
+        margin-top: 30px;
+        left: 100px;
+        align-items: center;
+        justify-content: flex-start;
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition-duration: .3s;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+        color: white;
+        background: #ad5389;
+        background: linear-gradient(to right, #00074d, #0d5891, #1977cc);
+      }  
+      
+      .logout {
+        width: 100%;
+        transition-duration: .3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .logout svg {
+        width: 17px;
+      }
+      
+      .logout svg path {
+        fill: white;
+      }
+      /* text */
+      .text-logout {     
+        display: none;     
+        font-family: "Manrope", "Raleway", sans-serif;
+        color: w#FEFEFE;
+        font-size: 0.7rem;
+        margin-left: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+        z-index: 100;
+        transition-duration: .3s;
+      }
+      /* hover effect on button width */
+      .Btn-logout:hover {
+        width: 125px;
+        border-radius: 40px;
+        transition-duration: .3s;
+        .text-logout {
+          display: flex;
+        }
+      }
+      
+      .Btn-logout:hover .sign {
+        width: 30%;
+        transition-duration: .3s;
+        padding-left: 20px;
+      }
+      /* hover effect button's text */
+      .Btn-logout:hover .text {
+        opacity: 1;
+        width: 70%;
+        transition-duration: .3s;
+        padding-right: 10px;
+      }
+      /* button click effect*/
+      .Btn-logout:active {
+        transform: translate(2px ,2px);
+      }
+    
+    
+      /* .navbar-mobile {  
+        position: fixed;  
+        width: 250px;
+        height: 100vh;
+        top: 0;
+        right: 0;
+        left: 50px;
+        bottom: 0; 
+        background: rgba(28, 47, 65, 0.9);
+        transition: 0.4s;  
+        border-radius: 20px 0 0 20px;  
+      }  */
+    
+      .navbar-mobile .mobile-nav-toggle {
+        position: absolute;
+        top: -80px;
+        left: 120px;
+        color: #28282a;
+      }  
+      .mobile-nav-toggle.bi-x {  
+        position: fixed;
+        top: 20px;
+        left: 200px;
+        color: rgba(26, 49, 83, 0.9);
+        opacity: 0.9;
+      }
+    
+      .navbar-mobile ul {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        padding: 10px 0;
+        background: #005AA7;  
+        background: -webkit-linear-gradient(to right, #005AA7, #FFFDE4 );  
+        background: linear-gradient(to right, #005AA7, #FFFDE4);  
+        overflow-y: auto;
+        transition: 0.4s;
+        border-radius:0 20px 20px 0;  
+        
+      } 
+    
+      .navbar-mobile>ul>li {
+        padding: 0;
+      }
+    
+      .navbar-mobile a,
+      .navbar-mobile a:focus {
+        padding: 10px 20px;
+        font-size: 15px;
+        color: #F0F3FA;
+        border: none;
+      }
+    
+      .navbar-mobile a:hover,
+      .navbar-mobile .active,
+      .navbar-mobile li:hover>a {
+        text-decoration: underline;
+        transform: scale(1.1);
+    
+        
+      } 
+    
+      .navbar-mobile .getstarted,
+      .navbar-mobile .getstarted:focus {
+        margin: 15px;
+      }
+    
+    }
+    
+    @media (min-width: 1000px) and (max-width: 1281px) {
+      #header .logo img {
+        max-height: 60px;
+        max-width: 60px;
+      }
+    
+      #header #btn-navCita {
+        position: absolute;
+        left: 150px;
+      }
+    
+      .Btn-logout {
+        display: flex;
+        position: absolute;
+        margin-top: 20px;  
+        right: 0;  
+        align-items: center;
+        justify-content: flex-start;
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition-duration: .3s;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+        color: white;
+        background: #ad5389;
+        background: linear-gradient(to right, #00074d, #0d5891, #1977cc);
+      }  
+      
+      .logout {
+        width: 100%;
+        transition-duration: .3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .logout svg {
+        width: 17px;
+      }
+      
+      .logout svg path {
+        fill: white;
+      }
+      /* text */
+      .text-logout {     
+        display: none;     
+        font-family: "Manrope", "Raleway", sans-serif;
+        color: w#FEFEFE;
+        font-size: 0.8rem;
+        margin-left: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+        z-index: 100;
+        transition-duration: .3s;
+      }
+      /* hover effect on button width */
+      .Btn-logout:hover {
+        width: 125px;
+        border-radius: 40px;
+        transition-duration: .3s;
+        .text-logout {
+          display: flex;
+        }
+      }
+      
+      .Btn-logout:hover .sign {
+        width: 30%;
+        transition-duration: .3s;
+        padding-left: 20px;
+      }
+      /* hover effect button's text */
+      .Btn-logout:hover .text {
+        opacity: 1;
+        width: 70%;
+        transition-duration: .3s;
+        padding-right: 10px;
+      }
+      /* button click effect*/
+      .Btn-logout:active {
+        transform: translate(2px ,2px);
+      }
+    
+      .navbar a {
+        color: #2b4963;
+        font-family: "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        line-height: 21px;
+      }   
+    }
+    
+    @media (min-width: 1282px) {
+      #header #btn-navCita {
+        position: absolute;
+        left: 400px;
+        font-size: 1rem;
+      }
+    
+      .Btn-logout {
+        display: flex;
+        position: absolute;
+        margin-top: 20px;  
+        right: 0;  
+        align-items: center;
+        justify-content: flex-start;
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition-duration: .3s;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+        color: white;
+        background: #ad5389;
+        background: linear-gradient(to right, #00074d, #0d5891, #1977cc);
+      }  
+      
+      .logout {
+        width: 100%;
+        transition-duration: .3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .logout svg {
+        width: 17px;
+      }
+      
+      .logout svg path {
+        fill: white;
+      }
+      /* text */
+      .text-logout {     
+        display: none;     
+        font-family: "Manrope", "Raleway", sans-serif;
+        color: w#FEFEFE;
+        font-size: 1rem;
+        margin-left: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+        z-index: 100;
+        transition-duration: .3s;
+      }
+      /* hover effect on button width */
+      .Btn-logout:hover {
+        width: 155px;
+        border-radius: 40px;
+        transition-duration: .3s;
+        .text-logout {
+          display: flex;
+        }
+      }
+      
+      .Btn-logout:hover .sign {
+        width: 30%;
+        transition-duration: .3s;
+        padding-left: 20px;
+      }
+      /* hover effect button's text */
+      .Btn-logout:hover .text {
+        opacity: 1;
+        width: 70%;
+        transition-duration: .3s;
+        padding-right: 10px;
+      }
+      /* button click effect*/
+      .Btn-logout:active {
+        transform: translate(2px ,2px);
+      }
+    
+      .navbar a {
+        color: #2b4963;
+        font-family: "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        line-height: 18px;    
+      }  
+    }
