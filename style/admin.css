@@ -25,6 +25,11 @@ body {
   /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+@font-face {
+  font-family: "Manrope";
+  src: local("Manrope"), url("../style/assets/vendor/fontawesome-free/webfonts/Manrope-Medium.ttf");
+}
+
 #header{
   display: flex;
   justify-content: center;
@@ -76,6 +81,24 @@ body {
     gap: 50px;
   }
 
+  .error {
+    margin: 5px 0;
+    color: #c23030;
+    background-color: rgb(236, 177, 166);
+    box-shadow: 2px 2px 2px rgb(83, 81, 81);
+    border-radius: 2px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1rem;
+    padding: 5px;
+    width: 60vw;
+    height: 40px;
+    text-align: center;
+  }
+  
+  .escondido {
+      display: none;
+  }
+
         
   
 /*--------------------------------------------------------------
@@ -91,7 +114,8 @@ body {
 }
 
 .navUser {
-  margin-right: auto; /* Hace que el texto 'Bienvenido' se desplace hacia la izquierda */
+  margin-right: auto; /* Hace que el texto 'Bienvenido' se desplace hacia la izquierda */          
+  font-family: 'Manrope', Tahoma, Geneva, Verdana, sans-serif;  
 }
 
 .Btn-logout {

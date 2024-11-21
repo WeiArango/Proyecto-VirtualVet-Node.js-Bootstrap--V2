@@ -142,62 +142,78 @@ async function registro(req, res) {
         tipoUsuario // Este es el valor "Administrador" o "Usuario"
     } = req.body;
 
-    if (!email || !username || !password) {
-        return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos marcados con *" });
+    // Validación de campos requeridos
+    if (!email || !username || !password || !tipoUsuario) {
+        return res.status(400).send({ status: "Error", message: "Por favor digite todos los campos obligatorios" });
+    }
+
+    // Asegurar que tipoUsuario es válido
+    if (!['Administrador', 'Usuario'].includes(tipoUsuario)) {
+        return res.status(400).send({ status: "Error", message: "Tipo de usuario inválido" });
     }
 
     // Verificar si ya existe el correo o el nombre de usuario
-    const buscarUsuarioQuery = "SELECT * FROM usuario WHERE email = ? OR username = ?";
+    const buscarUsuarioQuery = "SELECT * FROM usuario WHERE email = ? OR username = ? UNION SELECT * FROM admin WHERE email = ? OR username = ?";
+    const valoresConsulta = [email, username, email, username];
 
-    conexión.query(buscarUsuarioQuery, [email, username], async (error, rows) => {
+    conexión.query(buscarUsuarioQuery, valoresConsulta, async (error, rows) => {
         if (error) {
-            throw error;
+            console.error("Error al buscar usuarios:", error.message);
+            return res.status(500).send({ status: "Error", message: "Error del servidor" });
+        }
+
+        if (rows.length > 0) {
+            // Comprobamos si el email o username ya existen
+            const existingUser = rows[0];
+            if (existingUser.email === email) {
+                return res.status(400).send({ status: "Error", message: "Este correo electrónico ya está registrado" });
+            } else if (existingUser.username === username) {
+                return res.status(400).send({ status: "Error", message: "Este nombre de usuario ya está en uso" });
+            }
         } else {
-            if (rows.length > 0) {
-                const existingUser = rows[0];
-                if (existingUser.email === email) {
-                    return res.status(400).send({ status: "Error", message: "Este correo electrónico ya está registrado" });
-                } else if (existingUser.username === username) {
-                    return res.status(400).send({ status: "Error", message: "Este nombre de usuario ya está en uso" });
-                }
-            } else {
-                // Si no existe, registrar el nuevo usuario
+            // Crear nuevo usuario
+            try {
                 const salt = await bcryptjs.genSalt(10);
                 const hashPassword = await bcryptjs.hash(password, salt);
-                
-                const nuevoUsuario = {
+
+                // Seleccionar tabla según tipoUsuario
+                const tabla = tipoUsuario === 'Administrador' ? 'admin' : 'usuario';
+
+                const registrarUsuario = `
+                    INSERT INTO ${tabla} (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `;
+
+                const valoresRegistro = [
                     nombre,
                     email,
                     username,
                     celular,
                     direccion,
-                    password: hashPassword,
+                    hashPassword,
                     tipoIdentificacion,
                     identificacion,
-                    tipoUsuario // Almacenamos si es Administrador o Usuario
-                };
+                    tipoUsuario,
+                ];
 
-                // Verifica si el tipo de usuario es Administrador
-                const tabla = tipoUsuario === 'Administrador' ? 'admin' : 'usuario';
-
-                const registrarUsuario = `INSERT INTO ${tabla} (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
-                conexión.query(registrarUsuario, [nombre, email, username, celular, direccion, hashPassword, tipoIdentificacion, identificacion, tipoUsuario], (error) => {
+                conexión.query(registrarUsuario, valoresRegistro, (error) => {
                     if (error) {
-                        throw error;
+                        console.error("Error al registrar usuario:", error.message);
+                        return res.status(500).send({ status: "Error", message: "Error al registrar el usuario" });
                     } else {
-                        const successMessage = `${nombre} fue registrado exitosamente`;
-                        console.log(`Usuario ${username} creado exitosamente`);
-                        res.status(201).send({ status: "ok", message: successMessage, redirect: "/" });
+                        console.log(`Usuario ${username} registrado exitosamente como ${tipoUsuario}`);
+                        const successMessage = `${nombre} fue registrado exitosamente como ${tipoUsuario}`;
+                        res.status(201).send({ status: "ok", message: successMessage });
                     }
                 });
+            } catch (error) {
+                console.error("Error al encriptar contraseña:", error.message);
+                res.status(500).send({ status: "Error", message: "Error interno del servidor" });
             }
         }
     });
 }
 
-
- 
 
 async function recover_pass(req, res) {
     console.log("autenticacion", req.body);
@@ -312,9 +328,7 @@ async function mascotas(req, res) {
         const hoy = new Date();
         const edadEnMilisegundos = hoy - nacimiento;
         const edadEnAnios = edadEnMilisegundos / (1000 * 60 * 60 * 24 * 365.25);
-        const edadenanios = edadEnAnios.toFixed(1); // Redondear a un decimal
-
-       
+        const edadenanios = edadEnAnios.toFixed(1); // Redondear a un decimal       
 
         let registrarMascota = "INSERT INTO mascotas (id_mascota, nombre, especie, raza, edadenanios, fecha_nto, sexo, peso, vacunacion, desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant, alergias_med, cual) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 

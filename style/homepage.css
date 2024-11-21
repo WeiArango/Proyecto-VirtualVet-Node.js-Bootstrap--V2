@@ -231,11 +231,9 @@ h6 {
   top: 15px;
   left: 150px;
   display: flex; 
-  color: #171717; 
-  text-transform: uppercase;     
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
+  color: #171717;       
+  font-family: 'Manrope', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem;  
 }
 
 .escondido {
@@ -1004,7 +1002,7 @@ h6 {
 --------------------------------------------------------------*/
 @font-face {
   font-family: "Manrope";
-  src: local("Manrope"), url("../style/assets/vendor/fontawesome-free/webfonts/Manrope-Bold.ttf");
+  src: local("Manrope"), url("../style/assets/vendor/fontawesome-free/webfonts/Manrope-Medium.ttf");
 }
 
 #hero {

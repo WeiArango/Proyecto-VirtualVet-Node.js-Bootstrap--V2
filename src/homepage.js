@@ -5,7 +5,7 @@ const mensajeError = document.getElementsByClassName("navUser")[0];
 const username = localStorage.getItem("username");
 
 if (username) {
-    mensajeExito.textContent = `Bienvenido ${username}`;
+    mensajeExito.textContent = `Bienvenido ${username.toUpperCase()}`;
     mensajeError.classList.toggle("escondido", false);
 }
 

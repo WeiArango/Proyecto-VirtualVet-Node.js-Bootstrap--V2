@@ -61,7 +61,7 @@
                 </button>
             
                 <div class="modal fade" id="registerUserModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog" id="modalRegistro">
                     <div class="modal-content">
                     <div class="modal-header">          
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -105,6 +105,7 @@
                                     <option value="Auxiliar Veterinario">Auxiliar Veterinario</option>
                                     <option value="Estilista de Mascotas">Estilista de Mascotas</option>
                                     <option value="Paseador Canino">Paseador Canino</option>
+                                    <option value="Administrador">Administrador</option>
                                 </select>    
                             <button type="submit" value="registrar" class="btn btn-primary mb-3">Registrar</button> 
                                     
@@ -252,8 +253,9 @@
                         </tbody>
                         </table>  
                     </div>
-                    <!-- Formulario para editar los datos de una mascota -->
-                    <section id="editUserForm" class="editUserForm" style="display: contents;">
+
+                    <!-- Formulario para editar los datos de un usuario -->
+                    <section id="editUserForm" class="editUserForm" style="display: none;">
                         <h3>Editar Usuario</h3>
                         <form id="formEditarUsuario" method="post">
                         <!-- Campo oculto para almacenar primary_key -->
@@ -291,7 +293,7 @@
                         </form>
                     </section>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
                 </div>
@@ -300,101 +302,126 @@
 
             <!-- Sección para gestionar las mascotas registradas -->
             <section id="gestionarMascotas" class="gestionarMascotas">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gestionarMascotasModal" id="button-modal">
-                Gestionar Mascotas
-            </button>
-            <div class="modal fade" id="gestionarMascotasModal" tabindex="-1" aria-labelledby="gestionarMascotasModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-fullscreen">
-                    <div class="modal-content">
-                        <div class="modal-header">          
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                        <!-- Tabla para gestionar mascotas -->
-                        <h2>Mascotas Registradas</h2>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Especie</th>
-                                <th scope="col">Raza</th>
-                                <th scope="col">Edad</th>
-                                <th scope="col">Sexo</th>
-                                <th scope="col">Peso en Kg</th>
-                                <th scope="col">Vacunación</th>
-                                <th scope="col">Desparasitación</th>
-                                <th scope="col">Vivienda</th>
-                                <th scope="col">Alimento</th>
-                                <th scope="col">Trat Previos</th>
-                                <th scope="col">Alergias</th>
-                                <th scope="col">¿Cuál?</th>
-                                <th scope="col">Editar</th>
-                                <th scope="col">Eliminar</th>
-                            </tr>
-                            </thead>
-                            <tbody id="mascotasTableBody">
-                            <!-- Las filas de las mascotas se generarán aquí mediante JavaScript -->
-                            </tbody>
-                        </table>  
-                        </div>
-
-                        <!-- Formulario para editar los datos de una mascota -->
-                            <section id="editPetForm" class="editPetForm" style="display: contents;">
-                                <h3>Editar Mascota</h3>
-                                <form id="formEditarMascota" method="post">
-                                <!-- Campo oculto para almacenar primary_key -->
-                                <input type="hidden" id="primary_key" name="primary_key">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gestionarMascotasModal" id="button-modal">
+                    Gestionar Mascotas
+                </button>
+                
+                <!-- Modal para gestionar mascotas -->
+                <div class="modal fade" id="gestionarMascotasModal" tabindex="-1" aria-labelledby="gestionarMascotasModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-fullscreen">
+                        <div class="modal-content">
+                            <div class="modal-header">          
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h2>Mascotas Registradas</h2>
                                 
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre" required>
-                                
-                                <label for="especie">Especie:</label>
-                                <input type="text" id="especie" name="especie" required>
-                                
-                                <label for="raza">Raza:</label>
-                                <input type="text" id="raza" name="raza" required>
-                                
-                                <label for="fecha_nto">Fecha de Nacimiento:</label>
-                                <input type="date" id="fecha_nto" name="fecha_nto" required>
-                                
-                                <label for="sexo">Sexo:</label>
-                                <input type="text" id="sexo" name="sexo" required>
-                                
-                                <label for="peso">Peso:</label>
-                                <input type="number" id="peso" name="peso" required>
-                            
-                                <label for="vacunacion">Vacunación:</label>
-                                <input type="text" id="vacunacion" name="vacunacion" required>
-                            
-                                <label for="desparasitacion">Desparasitación:</label>
-                                <input type="text" id="desparasitacion" name="desparasitacion" required>
-                            
-                                <label for="tipo_vivienda">Tipo de Vivienda:</label>
-                                <input type="text" id="vivienda" name="tipo_vivienda" required>
-                            
-                                <label for="tipo_alimentacion">Tipo de Alimentación:</label>
-                                <input type="text" id="alimento" name="tipo_alimentacion" required>
-                            
-                                <label for="trat_previos">Tratamientos Previos:</label>
-                                <input type="text" id="trat_previos" name="trat_med_ant" required>
-                            
-                                <label for="allergias">Alergias:</label>
-                                <input type="text" id="allergias" name="alergias_med" required>
-                            
-                                <label for="cual">¿Cuál?:</label>
-                                <input type="text" id="cual" name="cual">
-                            
-                                <button type="submit">Guardar Cambios</button>
-                                <button type="button" onclick="cancelEdit()">Cancelar</button>
-                                </form>
-                            </section>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <!-- Tabla de mascotas -->
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Id_Mascota</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Especie</th>
+                                            <th scope="col">Raza</th>
+                                            <th scope="col">Edad</th>
+                                            <th scope="col">Sexo</th>
+                                            <th scope="col">Peso en Kg</th>
+                                            <th scope="col">Vacunación</th>
+                                            <th scope="col">Desparacitación</th>
+                                            <th scope="col">Vivienda</th>
+                                            <th scope="col">Alimento</th>
+                                            <th scope="col">Trat Previos</th>
+                                            <th scope="col">Alergias</th>
+                                            <th scope="col">¿Cuál?</th>
+                                            <th scope="col">Editar</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="mascotasTableBody">
+                                        <!-- Las filas de las mascotas se generarán aquí mediante JavaScript -->
+                                    </tbody>
+                                </table> 
+            
+                                <!-- Formulario de edición de mascota -->
+                                <div class="modal fade" id="editPetModal" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editPetModalLabel">Editar Mascota</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Formulario para editar datos de la mascota -->
+                                                <form id="formEditarMascota">
+                                                    <input type="hidden" id="primary_key">
+                                                    <div class="mb-3">
+                                                        <label for="nombre" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" id="nombre" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="especie" class="form-label">Especie</label>
+                                                        <input type="text" class="form-control" id="especie" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="raza" class="form-label">Raza</label>
+                                                        <input type="text" class="form-control" id="raza" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="fecha_nto" class="form-label">Fecha de Nacimiento</label>
+                                                        <input type="date" class="form-control" id="fecha_nto" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="sexo" class="form-label">Sexo</label>
+                                                        <input type="text" class="form-control" id="sexo" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="peso" class="form-label">Peso (kg)</label>
+                                                        <input type="text" class="form-control" id="peso" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="vacunacion" class="form-label">Vacunación</label>
+                                                        <input type="text" class="form-control" id="vacunacion" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="desparasitacion" class="form-label">Desparacitación</label>
+                                                        <input type="text" class="form-control" id="desparasitacion" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="vivienda" class="form-label">Vivienda</label>
+                                                        <input type="text" class="form-control" id="vivienda" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="alimento" class="form-label">Alimento</label>
+                                                        <input type="text" class="form-control" id="alimento" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="trat_previos" class="form-label">Tratamientos Previos</label>
+                                                        <input type="text" class="form-control" id="trat_previos" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="allergias" class="form-label">Alergias</label>
+                                                        <input type="text" class="form-control" id="allergias" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="cual" class="form-label">¿Cuál?</label>
+                                                        <input type="text" class="form-control" id="cual" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- Fin Modal Edición -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>    
+                            </div>
                         </div>
                     </div>
-                </div>  
-            </div>
-            </section>
+                </div>                 
+            </section>       
         </div>
     </header>
 </body>

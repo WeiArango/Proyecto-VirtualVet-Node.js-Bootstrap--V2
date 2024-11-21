@@ -36,6 +36,10 @@ body {
     font-family: "Roboto", "Raleway", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 
+  .admin-option {
+    display: none;
+  }
+
 .error {
   margin: 5px 0;
   color: #c23030;

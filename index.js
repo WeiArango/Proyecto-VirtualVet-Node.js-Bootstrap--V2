@@ -71,6 +71,15 @@ app.get("/reset_pass/:token", authorization.soloPublico, (req, res) => res.rende
 app.get("/modificar_password", authorization.soloHomepage, (req, res) => res.render("modificar_password"));
 app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homepage"));
 app.get("/mascotas/:id_mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
+app.get("/admin/mascotas", authorization.soloAdmin, (req, res) => {    
+    const query = "SELECT * FROM mascotas";  
+    conexión.query(query, (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: "Error al obtener las mascotas" });
+      }
+      res.json(results); // Devuelve las mascotas en formato JSON
+    });
+});
 app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
 app.get("/eliminar_cuenta", authorization.soloHomepage, (req, res) => res.render("eliminar_cuenta"));
 app.get("/admin", authorization.soloAdmin, (req, res) => res.render("admin"));
@@ -80,41 +89,45 @@ app.get("/admin", authorization.soloAdmin, (req, res) => res.render("admin"));
 
 //Para validar la ruta del servidor
 //REGISTRO DE USUARIOS
-app.post("/registrar", authentication.registro, async function (req, res) {
-     try {
-         const datos = req.body;
-         console.log(datos);
+app.post("/registrar", authentication.registro);
+// app.post("/registrar", authentication.registro, async function (req, res) {
+//      try {
+//          const datos = req.body;
+//          console.log(datos);
 
-         const nombre = datos.nombre;
-         const email = datos.email;
-         const username = datos.username;
-         const celular = datos.celular;
-         const direccion = datos.direccion;
-         const password = datos.password;
-         const tipoIdentificacion = datos.tipoIdentificacion;
-         const identificacion = datos.identificacion;
-         const tipoUsuario = datos.tipoUsuario;
+//          const nombre = datos.nombre;
+//          const email = datos.email;
+//          const username = datos.username;
+//          const celular = datos.celular;
+//          const direccion = datos.direccion;
+//          const password = datos.password;
+//          const tipoIdentificacion = datos.tipoIdentificacion;
+//          const identificacion = datos.identificacion;
+//          const tipoUsuario = datos.tipoUsuario;
 
-         // Verificar si el usuario ya existe
-         const buscar = "SELECT * FROM usuario WHERE username = ?";
-         const rows = await consultarBaseDeDatos(buscar, [username]);        
+//          // Verificar si el usuario ya existe
+//          const buscar = "SELECT * FROM usuario WHERE username = ?";
+//          const rows = await consultarBaseDeDatos(buscar, [username]);        
 
-         if (rows.length > 0) {
-             console.log("No se puede registrar, usuario ya existe");
-             return res.status(400).send("Usuario ya existe");
-         }
+//          if (rows.length > 0) {
+//              console.log("No se puede registrar, usuario ya existe");
+//              return res.status(400).send("Usuario ya existe");
+//          }
        
-         const registrar = "INSERT INTO usuario (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-         await consultarBaseDeDatos(registrar, [nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario]);
+//          const registrar = "INSERT INTO usuario (nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//          await consultarBaseDeDatos(registrar, [nombre, email, username, celular, direccion, password, tipoIdentificacion, identificacion, tipoUsuario]);
 
-         console.log("Usuario registrado exitosamente");
-         res.redirect("/homepage.ejs");
-         res.status(201).send("Usuario registrado exitosamente");
-     } catch (error) {
-         console.error("Error durante el registro:", error);
-         res.status(500).send("Error interno del servidor");
-     }
-});
+//          console.log("Usuario registrado exitosamente");
+//          res.redirect("/homepage.ejs");
+//          res.status(201).send("Usuario registrado exitosamente");
+//      } catch (error) {
+//          console.error("Error durante el registro:", error);
+//          res.status(500).send("Error interno del servidor");
+//      }
+// });
+
+//VALIDACIÓN Y LOGIN DE USUARIOS
+app.post("/validar", authentication.login);
 
 async function consultarBaseDeDatos(query, values) {
     return new Promise((resolve, reject) => {
@@ -128,8 +141,6 @@ async function consultarBaseDeDatos(query, values) {
     });
 }
 
-//LOGIN DE USUARIOS
-app.post("/validar", authentication.login);
 
 //CONFIGURACIÓN DE RESEND PARA RESTABLECIMIENTO DE CONTRASEÑA
 const resend = new Resend(process.env.API_KEY_RESEND);  // Asegúrate de reemplazar con tu API key
@@ -312,8 +323,6 @@ app.post('/cambiarPassword', (req, res) => {
 
 //REGISTRO DE MASCOTAS
 
-app.post("/mascotas", authentication.mascotas, function(req, res){
-});
 
 //RUTA PARA OBETENER DATOS DEL USUARIO
 app.get('/datos_personales', (req, res) => {
@@ -324,18 +333,18 @@ app.get('/datos_personales', (req, res) => {
         return;
     }
     const sql = `SELECT * FROM usuario WHERE username = ?`;
-  
+    
     conexión.query(sql, [user], (err, result) => {
-      if (err) {
-        console.error('Error en la base de datos:', err); // Debugging
-        res.status(500).send('Error en la base de datos');
-        return;
-      }
-      if (result.length > 0) {
-        res.json(result[0]);
-      } else {
-        res.status(404).send('Usuario no encontrado');
-      }
+        if (err) {
+            console.error('Error en la base de datos:', err); // Debugging
+            res.status(500).send('Error en la base de datos');
+            return;
+        }
+        if (result.length > 0) {
+            res.json(result[0]);
+        } else {
+            res.status(404).send('Usuario no encontrado');
+        }
     });
 });
 
@@ -343,13 +352,13 @@ app.get('/datos_personales', (req, res) => {
 app.put('/datos_personales', async function (req, res) {
     try {
         const datos = req.body;
-
+        
         const nombre = datos.nombre;
         const email = datos.email;
         const username = datos.username;
         const celular = datos.celular;
         const direccion = datos.direccion;
-
+        
         // Verificar si el usuario existe
         const buscar = "SELECT * FROM usuario WHERE username = ?";
         const rows = await consultarBaseDeDatos(buscar, [username]);
@@ -358,15 +367,15 @@ app.put('/datos_personales', async function (req, res) {
             console.log(`Usuario ${username} no encontrado`);
             return res.status(404).send(`Usuario ${username} no encontrado`);
         }
-
+        
         // Consulta para actualizar los datos del usuario
         const actualizar = `
-            UPDATE usuario 
-            SET nombre = ?, email = ?, celular = ?, direccion = ? 
-            WHERE username = ?
+        UPDATE usuario 
+        SET nombre = ?, email = ?, celular = ?, direccion = ? 
+        WHERE username = ?
         `;
         await consultarBaseDeDatos(actualizar, [nombre, email, celular, direccion, username]);
-
+        
         console.log(`Datos del usuario ${username} actualizados exitosamente`);
         res.status(200).send(`Datos del usuario ${username} actualizados exitosamente`);
     } catch (error) {
@@ -380,36 +389,36 @@ app.post("/modificarPassword", async (req, res) => {
     try {
         const datos = req.body;
         const { clave_actual, new_password, repeat_password, username } = datos;
-
+        
         // Verificar que las contraseñas nuevas coincidan
         if (new_password !== repeat_password) {
             return res.status(400).send({ status: "Error", message: "Las contraseñas nuevas no coinciden" });
         }
-
+        
         // Buscar la contraseña actual en la base de datos
         const buscar = "SELECT password FROM usuario WHERE username = ?";
         const rows = await consultarBaseDeDatos(buscar, [username]);
-
+        
         if (rows.length === 0) {
             return res.status(404).send({ status: "Error", message: "Usuario no encontrado" });
         }
-
+        
         const user = rows[0];
-
+        
         // Verificar que la contraseña actual sea correcta
         const contraseñaValida = await bcryptjs.compare(clave_actual, user.password);
         if (!contraseñaValida) {
             return res.status(401).send({ status: "Error", message: "Contraseña actual incorrecta" });
         }
-
+        
         // Encriptar la nueva contraseña
         const salt = await bcryptjs.genSalt(3);
         const hashPassword = await bcryptjs.hash(new_password, salt);
-
+        
         // Actualizar la contraseña del usuario
         const actualizar = "UPDATE usuario SET password = ? WHERE username = ?";
         await consultarBaseDeDatos(actualizar, [hashPassword, username]);
-
+        
         console.log(`Contraseña del usuario ${username} modificada exitosamente`);
         res.status(200).send({ status: "ok", message: `Contraseña modificada exitosamente para usuario ${username}`, redirect: "/homepage" });
     } catch (error) {
@@ -418,6 +427,9 @@ app.post("/modificarPassword", async (req, res) => {
     }
 });
 
+//RUTA PARA REGISTRAR MASCOTAS
+app.post("/mascotas", authentication.mascotas, function(req, res){
+});
 
 //RUTA PARA OBTENER DATOS DE MASCOTAS
 app.get('/mascotas', (req, res) => {
@@ -439,6 +451,30 @@ app.get('/mascotas', (req, res) => {
             res.json(result);
         } else {
             res.status(404).send('Mascotas no encontradas');
+        }
+    });
+});
+
+// Ruta para obtener todas las mascotas (solo para administradores)
+app.get('/mascotas/admin', (req, res) => {
+    const admin = req.query.admin == 'true'; // Verificar si el usuario es admin
+
+    if (!admin) {
+        return res.status(403).send('Acceso prohibido. Solo los administradores pueden ver todas las mascotas.');
+    }
+
+    const sqlAdmin = `SELECT * FROM mascotas`;
+
+    conexión.query(sqlAdmin, (err, result) => {
+        if (err) {
+            console.error('Error en la base de datos:', err);
+            return res.status(500).send('Error en la base de datos');
+        }
+
+        if (result.length > 0) {
+            return res.json(result); // Devuelve todas las mascotas registradas
+        } else {
+            return res.status(404).send('No se encontraron mascotas registradas');
         }
     });
 });
