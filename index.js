@@ -71,18 +71,76 @@ app.get("/reset_pass/:token", authorization.soloPublico, (req, res) => res.rende
 app.get("/modificar_password", authorization.soloHomepage, (req, res) => res.render("modificar_password"));
 app.get("/homepage", authorization.soloHomepage, (req, res) => res.render("homepage"));
 app.get("/mascotas/:id_mascotas", authorization.soloHomepage, (req, res) => res.render("mascotas"));
+app.get("/admin", authorization.soloAdmin, (req, res) => res.render("admin"));
 app.get("/admin/mascotas", authorization.soloAdmin, (req, res) => {    
     const query = "SELECT * FROM mascotas";  
     conexión.query(query, (err, results) => {
       if (err) {
+        console.error("Error al obtener las mascotas:", err);
         return res.status(500).json({ error: "Error al obtener las mascotas" });
       }
       res.json(results); // Devuelve las mascotas en formato JSON
     });
 });
+app.get("/admin/usuarios", authorization.soloAdmin, (req, res) => {    
+    const query = "SELECT * FROM usuario";  
+    conexión.query(query, (err, results) => {
+        if (err) {
+            console.error("Error al obtener los usuarios:", err);
+            return res.status(500).json({ error: "Error al obtener los usuarios" });
+        }
+        res.json(results); // Devuelve los usuarios en formato JSON
+    });
+});
+// Endpoint para obtener los datos de un usuario para editar por el ADMIN
+app.get('/admin/usuarios/editar/:id_usuario', authorization.soloAdmin, async function (req, res) {
+    try {
+        const { id_usuario } = req.params;
+
+        if (!id_usuario) {
+            return res.status(400).json({ error: "El campo 'id_usuario' es obligatorio." });
+        }
+
+        const buscar = "SELECT * FROM usuario WHERE id_usuario = ?";
+        const rows = await consultarBaseDeDatos(buscar, [id_usuario]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: `Usuario ${id_usuario} no encontrado.` });
+        }
+
+        return res.status(200).json(rows[0]);
+    } catch (error) {
+        console.error("Error al cargar los datos del usuario:", error);
+        return res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+// Endpoint para obtener los datos de una mascota para editar por el ADMIN
+app.get('/admin/mascotas/editar/:primary_key', authorization.soloAdmin, async function (req, res) {
+    try {
+        const { primary_key } = req.params;
+
+        if (!primary_key) {
+            return res.status(400).json({ error: "El campo 'primary_key' es obligatorio." });
+        }
+
+        // Consulta para obtener los datos de la mascota
+        const buscar = "SELECT * FROM mascotas WHERE primary_key = ?";
+        const rows = await consultarBaseDeDatos(buscar, [primary_key]);
+
+        if (rows.length === 0) {
+            console.log(`Mascota ${primary_key} no encontrada`);
+            return res.status(404).json({ error: `Mascota ${primary_key} no encontrada.` });
+        }
+
+        // Devolver los datos de la mascota
+        return res.status(200).json(rows[0]);
+    } catch (error) {
+        console.error("Error al cargar los datos de la mascota:", error);
+        return res.status(500).json({ error: "Error interno del servidor." });
+    }
+});  
 app.get("/datos_personales/:username", authorization.soloHomepage, (req, res) => res.render("datos_personales"));
 app.get("/eliminar_cuenta", authorization.soloHomepage, (req, res) => res.render("eliminar_cuenta"));
-app.get("/admin", authorization.soloAdmin, (req, res) => res.render("admin"));
 //Endpoints
 
 //Configuración de la ruta para obtener datos del usuario
@@ -455,30 +513,6 @@ app.get('/mascotas', (req, res) => {
     });
 });
 
-// Ruta para obtener todas las mascotas (solo para administradores)
-app.get('/mascotas/admin', (req, res) => {
-    const admin = req.query.admin == 'true'; // Verificar si el usuario es admin
-
-    if (!admin) {
-        return res.status(403).send('Acceso prohibido. Solo los administradores pueden ver todas las mascotas.');
-    }
-
-    const sqlAdmin = `SELECT * FROM mascotas`;
-
-    conexión.query(sqlAdmin, (err, result) => {
-        if (err) {
-            console.error('Error en la base de datos:', err);
-            return res.status(500).send('Error en la base de datos');
-        }
-
-        if (result.length > 0) {
-            return res.json(result); // Devuelve todas las mascotas registradas
-        } else {
-            return res.status(404).send('No se encontraron mascotas registradas');
-        }
-    });
-});
-
 //Ruta para editar datos de mascotas
 app.put('/datos_mascotas', async function (req, res) {
     try {
@@ -584,14 +618,170 @@ app.post("/eliminarCuenta", async (req, res) => {
     }
 });
 
+//RUTA PARA EDITAR DATOS DE USUARIOS POR EL ADMINISTRADOR
+// Endpoint para actualizar los datos de un usuario
+app.put('/admin/usuarios/editar', async function (req, res) {
+    try {
+        const {
+            id_usuario,
+            nombre,
+            email,
+            username,
+            celular,
+            direccion,
+            tipoIdentificacion,
+            identificacion,
+            tipoUsuario
+        } = req.body;
+
+        if (!id_usuario || !nombre || !email || !username) {
+            return res.status(400).json({
+                error: "Los campos 'id_usuario', 'nombre', 'email' y 'username' son obligatorios."
+            });
+        }
+
+        const buscar = "SELECT * FROM usuario WHERE id_usuario = ?";
+        const rows = await consultarBaseDeDatos(buscar, [id_usuario]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: `Usuario ${id_usuario} no encontrado` });
+        }
+
+        const actualizar = `
+            UPDATE usuario SET
+                nombre = ?, 
+                email = ?, 
+                username = ?, 
+                celular = ?, 
+                direccion = ?, 
+                tipoIdentificacion = ?, 
+                identificacion = ?, 
+                tipoUsuario = ?
+            WHERE id_usuario = ?
+        `;
+
+        await consultarBaseDeDatos(actualizar, [
+            nombre.trim(),
+            email.trim(),
+            username.trim(),
+            celular?.trim() || null,
+            direccion?.trim() || null,
+            tipoIdentificacion?.trim() || null,
+            identificacion?.trim() || null,
+            tipoUsuario?.trim() || null,
+            id_usuario
+        ]);
+
+        return res.status(200).json({
+            message: `Datos del usuario ${username} actualizados exitosamente`
+        });
+    } catch (error) {
+        console.error("Error al actualizar los datos del usuario:", error);
+        return res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
+
+app.put('/admin/mascotas/editar', async function (req, res) {
+    try {
+        const {
+            primary_key,
+            nombre, especie, raza, fecha_nto, sexo, peso, vacunacion,
+            desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant,
+            alergias_med, cual
+        } = req.body;
+
+        // Validar datos obligatorios
+        if (!primary_key || !nombre) {
+            return res.status(400).json({
+                error: "Los campos 'primary_key' y 'nombre' son obligatorios."
+            });
+        }
+
+        // Validar que primary_key sea un número
+        if (isNaN(primary_key)) {
+            return res.status(400).json({
+                error: "'primary_key' debe ser un número válido."
+            });
+        }
+
+        // Comprobar si la mascota existe
+        const buscar = "SELECT * FROM mascotas WHERE primary_key = ?";
+        const rows = await consultarBaseDeDatos(buscar, [primary_key]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: `Mascota con ID ${primary_key} no encontrada.` });
+        }
+
+        // Actualizar los datos de la mascota
+        const actualizar = `
+            UPDATE mascotas
+            SET nombre = ?, especie = ?, raza = ?, fecha_nto = ?, sexo = ?, peso = ?, 
+                vacunacion = ?, desparasitacion = ?, tipo_vivienda = ?, tipo_alimentacion = ?, 
+                trat_med_ant = ?, alergias_med = ?, cual = ?
+            WHERE primary_key = ?
+        `;
+
+        await consultarBaseDeDatos(actualizar, [
+            nombre, especie, raza, fecha_nto, sexo, peso, vacunacion,
+            desparasitacion, tipo_vivienda, tipo_alimentacion, trat_med_ant,
+            alergias_med, cual, primary_key
+        ]);
+
+        // Respuesta exitosa
+        return res.status(200).json({
+            message: `Datos de la mascota '${nombre}' actualizados exitosamente.`
+        });
+    } catch (error) {
+        console.error("Error al actualizar los datos de la mascota:", error);
+
+        // Mensaje de error genérico
+        return res.status(500).json({
+            error: "Ocurrió un error interno del servidor. Intenta nuevamente más tarde."
+        });
+    }
+});
 
 
+//RUTA PARA ELIMINAR UNA MASCOTA POR EL ADMIN
+//Ruta para eliminar una mascota
+app.delete('/admin/delete/mascotas/:id', async function (req, res) {
+    try {
+        const primary_key = req.params.id;
 
+        // Consulta para eliminar la mascota por primary_key
+        const eliminarQuery = "DELETE FROM mascotas WHERE primary_key = ?";
+        const result = await consultarBaseDeDatos(eliminarQuery, [primary_key]);
 
+        if (result.affectedRows === 0) {
+            return res.status(404).send(`Mascota con id ${primary_key} no encontrada`);
+        }
 
+        res.status(200).send(`Mascota con id ${primary_key} eliminada exitosamente`);
+    } catch (error) {
+        console.error("Error al eliminar la mascota:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
 
+//RUTA PARA ELIMINAR UN USUARIO POR EL ADMIN
+//Ruta para eliminar un usuario
+app.delete('/admin/delete/usuarios/:id', async function (req, res) {
+    try {
+        const id_usuario = req.params.id; // Corregido el nombre del parámetro
 
+        const eliminarQuery = "DELETE FROM usuario WHERE id_usuario = ?";
+        const result = await consultarBaseDeDatos(eliminarQuery, [id_usuario]);
 
+        if (result.affectedRows === 0) {
+            return res.status(404).send(`Usuario con id ${id_usuario} no encontrado`);
+        }
+
+        res.status(200).send(`Usuario con id ${id_usuario} eliminado exitosamente`);
+    } catch (error) {
+        console.error("Error al eliminar el usuario:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
 
 
 

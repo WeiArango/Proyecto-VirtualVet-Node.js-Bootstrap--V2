@@ -230,73 +230,83 @@
                     </div>
                     <div class="modal-body">
                     <!-- Tabla para gestionar usuarios -->
-                        <h2>Usuarios Registrados</h2>
-                        <table class="table table-striped">
-                        <thead>
-                            <tr>
-                            <th scope="col">id_usuario</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Celular</th>
-                            <th scope="col">Dirección</th>
-                            <th scope="col">Password</th>
-                            <th scope="col">Tipo de Identificación</th>
-                            <th scope="col">Identificación</th>
-                            <th scope="col">Tipo de Usuario</th> 
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>         
-                            </tr>
-                        </thead>
-                        <tbody id="usuariosTableBody">
-                            <!-- Las filas de los usuarios se generarán aquí mediante JavaScript -->
-                        </tbody>
-                        </table>  
-                    </div>
-
+                    <h2>Usuarios Registrados</h2>
+                    <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">id_usuario</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Celular</th>
+                        <th scope="col">Dirección</th>                        
+                        <th scope="col">Tipo de Identificación</th>
+                        <th scope="col">Identificación</th>
+                        <th scope="col">Tipo de Usuario</th> 
+                        <th scope="col">Editar</th>
+                        <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuariosTableBody">
+                        <!-- Las filas de los usuarios se generarán aquí mediante JavaScript -->
+                    </tbody>
+                    </table>
+                    
                     <!-- Formulario para editar los datos de un usuario -->
                     <section id="editUserForm" class="editUserForm" style="display: none;">
                         <h3>Editar Usuario</h3>
                         <form id="formEditarUsuario" method="post">
-                        <!-- Campo oculto para almacenar primary_key -->
-                        <input type="hidden" id="primary_key" name="primary_key">
-                        
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                        
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                        
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" required>
-                        
-                        <label for="celular">Celular:</label>
-                        <input type="tel" id="username" name="username">
-                        
-                        <label for="direccion">Dirección:</label>
-                        <input type="text" id="direccion" name="direccion">
-                        
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
-                    
-                        <label for="tipoDeIdentificacion">Tipo de Identificación:</label>
-                        <input type="text" id="tipoDeIdentificacion" name="tipoDeIdentificacion">
-                    
-                        <label for="identificacion">Identificación:</label>
-                        <input type="text" id="identificacion" name="identificacion">
-                    
-                        <label for="tipoUsuario">Tipo de Usuario:</label>
-                        <input type="text" id="tipoUsuario" name="tipoUsuario" required>                   
-                    
-                        <button type="submit">Guardar Cambios</button>
-                        <button type="button" onclick="cancelEdit()">Cancelar</button>
-                        </form>
+                            <input type="hidden" id="primary_key" name="primary_key">
+
+                            <label for="nombre" class="sr-only">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" placeholder="Nombre" class="form-control mb-3">
+            
+                            <label for="email" class="sr-only">Email</label>
+                            <input type="email" name="email" id="email" placeholder="Email*" class="form-control mb-3">
+            
+                            <label for="username" class="sr-only">Username</label>
+                            <input type="text" name="username" id="username" placeholder="Username*" class="form-control mb-3">
+            
+                            <label for="celular" class="sr-only">Celular</label>
+                            <input type="tel" name="celular" id="celular" placeholder="Celular (opcional)" class="form-control mb-3">
+            
+                            <label for="direccion" class="sr-only">Direccion</label>
+                            <input type="text" name="direccion" id="direccion" placeholder="Dirección (opcional)" class="form-control mb-3">            
+            
+                            <label for="tipoDeIdentificacion" class="mb-3">Tipo de identificacion</label>            
+                            <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select mb-3 tipo">
+                                <option value="Cédula">Cédula</option>
+                                <option value="TI">Tarjeta de Identidad</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                                <option value="Nit">Nit</option>
+                            </select>                           
+                                
+                            <label for="identificacion" class="sr-only">N° Identificacion</label>
+                            <input type="text" name="identificacion" id="identificacion" placeholder="N° Identificación (opcional)" class="form-control mb-3">
+            
+                            <label for="tipoDeUsuario" class="mb-3">Tipo de usuario</label>            
+                            <select id="tipoUsuario" name="tipoUsuario" class="form-select mb-3">
+                                <option value="Usuario">Usuario</option>
+                                <option value="Médico Veterinario">Médico Veterinario</option>
+                                <option value="Auxiliar Veterinario">Auxiliar Veterinario</option>
+                                <option value="Estilista de Mascotas">Estilista de Mascotas</option>
+                                <option value="Paseador Canino">Paseador Canino</option>
+                                <option value="Administrador">Administrador</option>
+                            </select>                              
+                            <button type="submit" value="actualizat" class="btn btn-primary mb-3">Actualizar</button> 
+                            <button type="button" class="btn btn-secondary mb-3" onclick="cerrarFormulario()">Cancelar</button>
+
+                        </form>                        
                     </section>
+
+
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
                 </div>
+            </div>
             </div>
             </section>
 
@@ -341,83 +351,54 @@
                                     <tbody id="mascotasTableBody">
                                         <!-- Las filas de las mascotas se generarán aquí mediante JavaScript -->
                                     </tbody>
-                                </table> 
-            
-                                <!-- Formulario de edición de mascota -->
-                                <div class="modal fade" id="editPetModal" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editPetModalLabel">Editar Mascota</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- Formulario para editar datos de la mascota -->
-                                                <form id="formEditarMascota">
-                                                    <input type="hidden" id="primary_key">
-                                                    <div class="mb-3">
-                                                        <label for="nombre" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" id="nombre" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="especie" class="form-label">Especie</label>
-                                                        <input type="text" class="form-control" id="especie" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="raza" class="form-label">Raza</label>
-                                                        <input type="text" class="form-control" id="raza" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="fecha_nto" class="form-label">Fecha de Nacimiento</label>
-                                                        <input type="date" class="form-control" id="fecha_nto" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="sexo" class="form-label">Sexo</label>
-                                                        <input type="text" class="form-control" id="sexo" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="peso" class="form-label">Peso (kg)</label>
-                                                        <input type="text" class="form-control" id="peso" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="vacunacion" class="form-label">Vacunación</label>
-                                                        <input type="text" class="form-control" id="vacunacion" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="desparasitacion" class="form-label">Desparacitación</label>
-                                                        <input type="text" class="form-control" id="desparasitacion" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="vivienda" class="form-label">Vivienda</label>
-                                                        <input type="text" class="form-control" id="vivienda" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="alimento" class="form-label">Alimento</label>
-                                                        <input type="text" class="form-control" id="alimento" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="trat_previos" class="form-label">Tratamientos Previos</label>
-                                                        <input type="text" class="form-control" id="trat_previos" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="allergias" class="form-label">Alergias</label>
-                                                        <input type="text" class="form-control" id="allergias" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="cual" class="form-label">¿Cuál?</label>
-                                                        <input type="text" class="form-control" id="cual" required>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> <!-- Fin Modal Edición -->
+                                </table>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 </div>    
                             </div>
+
+                            
+                                <!-- Formulario para editar los datos de una mascota -->
+                                <section id="editPetForm" class="editPetForm" style="display: none;">
+                                    <h3 class="editPet
+                                    ">Editar Mascota</h3>
+                                    <form id="formEditarMascota" method="post">
+                                    <!-- Campo oculto para almacenar primary_key -->
+                                    <input type="hidden" id="primary_key" name="primary_key">
+                                    
+                                    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                                
+                                    <input type="text" id="especie" name="especie" placeholder="Especie (Canino-Felino-Otros)">
+                                    
+                                    <input type="text" id="raza" name="raza" placeholder="Raza">
+                                    
+                                    <label for="fecha_nto">Fecha de Nacimiento:</label>
+                                    <input type="date" id="fecha_nto" name="fecha_nto">
+                                    
+                                    <input type="text" id="sexo" name="sexo" placeholder="Sexo">
+                                    
+                                    <label for="peso">Peso en Kg:</label>
+                                    <input type="number" id="peso" name="peso">
+                                
+                                    <input type="text" id="vacunacion" name="vacunacion" placeholder="Vacunación Si/No">
+                                
+                                    <input type="text" id="desparasitacion" name="desparasitacion" placeholder="Desparasitación Si/No">
+                                
+                                    <input type="text" id="vivienda" name="tipo_vivienda" placeholder="Tipo Vivienda">
+                                
+                                    <input type="text" id="alimento" name="tipo_alimentacion" placeholder="Tipo Alimentación">
+                                
+                                    <input type="text" id="trat_previos" name="trat_med_ant" placeholder="Tratamientos Previos">
+                                
+                                    <input type="text" id="allergias" name="alergias_med" placeholder="Alergias Si/No">
+                                
+                                    <input type="text" id="cual" name="cual" placeholder="A que es alérgico??">
+                                
+                                    <button type="submit">Guardar Cambios</button>
+                                    <button type="button" onclick="cancelEdit()">Cancelar</button>
+                                    </form>
+                                </section>
+
                         </div>
                     </div>
                 </div>                 

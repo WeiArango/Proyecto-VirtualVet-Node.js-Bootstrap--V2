@@ -27,9 +27,14 @@ document.getElementById("register-form").addEventListener("submit", async(e) => 
        alert(resJSON.message)
    }
 
+   if (resJSON.resetForm) {
+    // Reiniciar el formulario
+    e.target.reset();
+}
+
    if (!res.ok) {
        mensajeError.classList.toggle("escondido", false);       
-   }
+   } 
 
    if(resJSON.redirect) {
        window.location.href = resJSON.redirect;

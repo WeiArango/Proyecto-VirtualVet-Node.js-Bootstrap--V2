@@ -148,7 +148,7 @@ async function registro(req, res) {
     }
 
     // Asegurar que tipoUsuario es válido
-    if (!['Administrador', 'Usuario'].includes(tipoUsuario)) {
+    if (!['Administrador', 'Usuario', 'Médico Veterinario', 'Auxiliar Veterinario', 'Estilista de Mascotas', 'Paseador Canino'].includes(tipoUsuario)) {
         return res.status(400).send({ status: "Error", message: "Tipo de usuario inválido" });
     }
 
@@ -203,7 +203,7 @@ async function registro(req, res) {
                     } else {
                         console.log(`Usuario ${username} registrado exitosamente como ${tipoUsuario}`);
                         const successMessage = `${nombre} fue registrado exitosamente como ${tipoUsuario}`;
-                        res.status(201).send({ status: "ok", message: successMessage });
+                        res.status(201).send({ status: "ok", message: successMessage, resetForm: true, redirect: "/" });
                     }
                 });
             } catch (error) {

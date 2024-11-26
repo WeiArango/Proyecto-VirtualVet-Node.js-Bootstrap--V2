@@ -518,20 +518,6 @@ body {
         transform: translate(2px ,2px);
       }
     
-    
-      /* .navbar-mobile {  
-        position: fixed;  
-        width: 250px;
-        height: 100vh;
-        top: 0;
-        right: 0;
-        left: 50px;
-        bottom: 0; 
-        background: rgba(28, 47, 65, 0.9);
-        transition: 0.4s;  
-        border-radius: 20px 0 0 20px;  
-      }  */
-    
       .navbar-mobile .mobile-nav-toggle {
         position: absolute;
         top: -80px;
@@ -776,3 +762,39 @@ body {
         line-height: 18px;    
       }  
     }
+
+#editUserForm {   
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 40vw;  
+  margin-left: 30%;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-top: 60px;
+  padding: 30px 50px;
+  background-color: #F0F3FA;  
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);   
+}
+
+#editPetForm {   
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  width: 40vw;  
+  margin: 0 0 5% 30%;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-top: 60px;
+  padding: 30px 50px;
+  background-color: #F0F3FA;  
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);   
+}
+
+#formEditarMascota input {
+  gap: 10px;
+}
+
+
+
